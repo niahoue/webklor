@@ -1,0 +1,130 @@
+/* Style pour la page de connexion */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+  padding: 2rem 0;
+}
+
+.login-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.login-card .card-header {
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.login-card .card-header img {
+  max-height: 60px;
+  margin-bottom: 1rem;
+}
+
+.login-card .card-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.login-card .card-body {
+  padding: 2rem;
+}
+
+.login-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.login-form .form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.login-form .form-control {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.login-form .form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+  margin-top: 1rem;
+  background-color: #2563eb;
+  border-color: #2563eb;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover, .login-btn:focus {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.forgot-password-link {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  color: #666;
+}
+
+.forgot-password-link:hover {
+  color: #2563eb;
+}
+
+.login-card .card-footer {
+  background-color: #f9fafb;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  text-align: center;
+  color: #666;
+}
+
+.login-card .copyright {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.logo-container {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    margin: 0 1rem;
+  }
+  
+  .login-card .card-body {
+    padding: 1.5rem;
+  }
+}

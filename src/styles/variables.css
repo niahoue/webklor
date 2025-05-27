@@ -1,0 +1,49 @@
+:root {
+  /* Palette de couleurs WebKlor */
+  --primary: #007BFF;    /* Bleu */
+  --secondary: #28A745;  /* Vert */
+  --accent: #FFC107;     /* Orange */
+  --light: #F8F9FA;      /* Gris clair */
+  --dark: #212529;       /* Noir/gris foncé pour le texte */
+  
+  /* Variantes de couleurs pour les effets */
+  --primary-light: #3395ff;
+  --primary-dark: #0062cc;
+  --secondary-light: #48c766;
+  --secondary-dark: #1e7e34;
+  --accent-light: #ffce3a;
+  --accent-dark: #d39e00;
+  
+  /* Espacement */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 3rem;
+  
+  /* Typographie */
+  --font-primary: 'Montserrat', sans-serif;
+  --font-accent: 'Pacifico', cursive;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+  --font-size-hero: 3.5rem;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Ombres */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  
+  /* Arrondis */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 1rem;
+  --border-radius-full: 9999px;
+}
