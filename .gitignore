@@ -169,13 +169,9 @@ tmp/
 # Upload directories
 uploads/
 
-# Administration scripts (sécurité)
-create-admin*.ps1
-create-admin*.bat
-create-admin*.sh
+# Administration scripts temporaires (anciens)
 quick-create-admin.*
 add-admin.*
-*.mjs
 
 # Documentation temporaire
 RAPPORT-*.md
@@ -183,3 +179,8 @@ README-CREATE-ADMIN.md
 test-admin-features.md
 validate-admin.sh
 verify-refactoring.sh
+
+# Fichiers de configuration sensibles
+server/.env.production
+*.env.local
+.env.production
