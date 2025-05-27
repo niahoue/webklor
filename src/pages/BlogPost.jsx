@@ -17,11 +17,10 @@ const BlogPost = () => {
   const [relatedPosts, setRelatedPosts] = useState([]);
   
   // Charger l'article
-  useEffect(() => {
-    const fetchPost = async () => {
+  useEffect(() => {    const fetchPost = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/api/blog/posts/${slug}`);
+        const response = await fetch(`/api/blog/posts/${slug}`);
         const data = await response.json();
         
         if (!response.ok) {
@@ -43,11 +42,10 @@ const BlogPost = () => {
     
     fetchPost();
   }, [slug]);
-  
-  // Récupérer les articles liés par catégorie
+    // Récupérer les articles liés par catégorie
   const fetchRelatedPosts = async (category) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/blog/posts?category=${category}&limit=3`);
+      const response = await fetch(`/api/blog/posts?category=${category}&limit=3`);
       const data = await response.json();
       
       if (response.ok) {

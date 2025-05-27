@@ -11,7 +11,10 @@
     "server": "node server/server.js",
     "server:dev": "nodemon server/server.js",
     "start": "node server/server.js",
-    "add-admin": "node server/scripts/add-admin.js"
+    "add-admin": "node server/scripts/add-admin.js",
+    "generate-sitemap": "node scripts/generate-sitemap-advanced.js",
+    "validate-seo": "powershell -ExecutionPolicy Bypass -File validate-seo.ps1",
+    "build-and-deploy": "npm run build && npm run generate-sitemap"
   },
   "dependencies": {
     "body-parser": "^2.2.0",
@@ -40,6 +43,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "node-fetch": "^3.3.2",
     "nodemon": "^3.1.10",
     "vite": "^6.3.5"
   }

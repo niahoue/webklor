@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Spinner, Alert } from 'react-bootstrap';
 import CommentForm from './CommentForm';
+import API_BASE_URL from '../utils/apiConfig';
 
 /**
  * Composant affichant un commentaire individuel avec ses réponses
@@ -78,12 +79,11 @@ const Comments = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Charger les commentaires
+    // Charger les commentaires
   const fetchComments = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/blog/posts/${postId}/comments`);
+      const response = await fetch(`${API_BASE_URL}/api/blog/posts/${postId}/comments`);
       
       if (!response.ok) {
         const data = await response.json();

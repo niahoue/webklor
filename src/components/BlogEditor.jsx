@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet, apiPost, apiPut } from '../services/api';
+import API_BASE_URL from '../utils/apiConfig';
 
 /**
  * Composant d'édition d'articles de blog
@@ -60,11 +61,10 @@ const BlogEditor = () => {
       fetchPost();
     }
   }, [id]);
-  
-  const fetchPost = async () => {
+    const fetchPost = async () => {
     setLoading(true);
     try {
-      const data = await apiGet(`http://localhost:5000/api/admin/blog/posts/${id}`, { headers: getAuthHeader() });
+      const data = await apiGet(`${API_BASE_URL}/api/admin/blog/posts/${id}`, { headers: getAuthHeader() });
       const post = data.data;
       
       setFormData({
@@ -151,11 +151,10 @@ const BlogEditor = () => {
         ...formData,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
       };
-      
-      // Déterminer l'URL et la méthode
+        // Déterminer l'URL et la méthode
       const url = isNewPost 
-        ? 'http://localhost:5000/api/admin/blog/posts' 
-        : `http://localhost:5000/api/admin/blog/posts/${id}`;
+        ? `${API_BASE_URL}/api/admin/blog/posts` 
+        : `${API_BASE_URL}/api/admin/blog/posts/${id}`;
         
       // Envoyer la requête
       if (isNewPost) {

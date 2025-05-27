@@ -43,7 +43,7 @@ const Blog = () => {
     setLoading(true);
     try {
       // Construire l'URL avec les paramètres
-      let url = `http://localhost:5000/api/blog/posts?page=${currentPage}&limit=6`;
+      let url = `/api/blog/posts?page=${currentPage}&limit=6`;
       
       // Ajouter le filtre par catégorie si spécifié (sauf pour "Tous")
       if (selectedCategory !== 'Tous') {

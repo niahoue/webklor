@@ -5,6 +5,7 @@ import SEO from '../components/SEO';
 import ProtectedRoute from '../components/ProtectedRoute';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet, apiPost, apiPut, apiDelete } from '../services/api';
+import API_BASE_URL from '../utils/apiConfig';
 
 /**
  * Page d'administration des newsletters

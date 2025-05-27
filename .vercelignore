@@ -1,0 +1,49 @@
+# Fichiers à ignorer lors du déploiement Vercel
+
+# Dossiers de développement
+node_modules/
+.git/
+.env.local
+.env.development
+
+# Fichiers de build locaux
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers temporaires
+.tmp/
+.cache/
+
+# Scripts PowerShell (non nécessaires en production)
+*.ps1
+
+# Documentation (sauf README)
+*.md
+!README.md
+
+# Fichiers de configuration locale
+.vscode/
+.idea/
+
+# Dossier server (nous utilisons api/ pour Vercel)
+server/
+
+# Scripts de développement
+scripts/
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Exclure les fichiers lib de la détection automatique de fonctions
+api/lib/controllers/
+api/lib/routes/
+api/lib/models/
+api/lib/middlewares/
+api/lib/utils/

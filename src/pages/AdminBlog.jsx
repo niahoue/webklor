@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet, apiDelete } from '../services/api';
 import SEO from '../components/SEO';
+import API_BASE_URL from '../utils/apiConfig';
 
 /**
  * Page d'administration du blog
@@ -42,11 +43,10 @@ const AdminBlog = () => {
     description: "Interface d'administration pour gérer les articles du blog WebKlor",
     noindex: true // Pour éviter l'indexation par les moteurs de recherche
   };
-  
-  // Fonction pour récupérer les statistiques
+    // Fonction pour récupérer les statistiques
   const fetchStats = async () => {
     try {
-      const data = await apiGet('http://localhost:5000/api/admin/blog/stats', { headers: getAuthHeader() });
+      const data = await apiGet(`${API_BASE_URL}/api/admin/blog/stats`, { headers: getAuthHeader() });
       setStats(data.data);
     } catch (error) {
       if (error.message && error.message.toLowerCase().includes('401')) {
@@ -60,9 +60,8 @@ const AdminBlog = () => {
   // Fonction pour récupérer les articles
   const fetchPosts = async () => {
     setLoading(true);
-    try {
-      // Construire l'URL avec les paramètres de filtre et pagination
-      let url = `http://localhost:5000/api/admin/blog/posts?page=${currentPage}`;
+    try {      // Construire l'URL avec les paramètres de filtre et pagination
+      let url = `${API_BASE_URL}/api/admin/blog/posts?page=${currentPage}`;
       
       if (filters.status) url += `&status=${filters.status}`;
       if (filters.category) url += `&category=${filters.category}`;
@@ -86,7 +85,7 @@ const AdminBlog = () => {
   const handleDeletePost = async (id) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       try {
-        await apiDelete(`http://localhost:5000/api/admin/blog/posts/${id}`, { headers: getAuthHeader() });
+        await apiDelete(`${API_BASE_URL}/api/admin/blog/posts/${id}`, { headers: getAuthHeader() });
         fetchPosts();
         fetchStats();
         alert('Article supprimé avec succès');

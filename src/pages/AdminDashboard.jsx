@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { apiGet } from '../services/api';
 import SEO from '../components/SEO';
 import AdminLayout from '../components/AdminLayout';
+import API_BASE_URL from '../utils/apiConfig';
 import '../styles/admin.css';
 
 /**

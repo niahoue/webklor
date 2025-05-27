@@ -1,0 +1,19 @@
+{
+  "name": "webklor-sitemap-generator",
+  "version": "1.0.0",
+  "description": "Générateur de sitemap automatique pour WebKlor",
+  "type": "module",
+  "main": "generate-sitemap-advanced.js",
+  "scripts": {
+    "generate": "node generate-sitemap-advanced.js",
+    "generate-simple": "node generate-sitemap.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": "WebKlor",
+  "license": "MIT"
+}

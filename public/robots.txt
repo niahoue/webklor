@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://webklor.com/sitemap.xml
+
+# Interdire l'accès aux pages admin
+Disallow: /admin/
+Disallow: /login
+
+# Interdire l'accès aux API
+Disallow: /api/
+
+# Fichiers et dossiers à ignorer
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /assets/fonts/
+Disallow: /assets/icons/
+
+# Autoriser les moteurs de recherche courants
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Délai entre les requêtes (en secondes)
+Crawl-delay: 1
