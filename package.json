@@ -11,10 +11,7 @@
     "server": "node server/server.js",
     "server:dev": "nodemon server/server.js",
     "start": "node server/server.js",
-    "add-admin": "node server/scripts/add-admin.js",
-    "deploy": "npm run build && echo 'Build créé avec succès! Prêt pour le déploiement.'",
-    "setup": "npm install && cd server && npm install && cd .. && echo 'Installation terminée!'",
-    "full-build": "npm run setup && npm run build"
+    "add-admin": "node server/scripts/add-admin.js"
   },
   "dependencies": {
     "body-parser": "^2.2.0",

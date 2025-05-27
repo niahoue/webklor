@@ -18,7 +18,7 @@ WebKlor est une agence digitale spécialisée dans la création de sites web, le
 - 📧 Newsletter et gestion des abonnés
 - 💬 Système de commentaires
 - 📊 Dashboard administrateur complet
-- 🗄️ Base de données MongoDB
+- 🗄️ Base de données SQLite
 
 ### Pages Principales
 - 🏠 **Accueil** - Présentation de l'agence
