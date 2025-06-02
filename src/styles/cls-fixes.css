@@ -1,0 +1,263 @@
+/* Corrections spécifiques pour réduire le Cumulative Layout Shift (CLS) */
+
+/* 1. Dimensions fixes pour toutes les images */
+.hero-image {
+  aspect-ratio: 16/9;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.portfolio-image {
+  aspect-ratio: 4/3;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.service-image {
+  aspect-ratio: 16/10;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.testimonial-avatar {
+  aspect-ratio: 1;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* 2. Conteneurs avec dimensions fixes */
+.portfolio-image-container {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  position: relative;
+  background-color: #f8f9fa;
+}
+
+.service-image-container {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  position: relative;
+  background-color: #f8f9fa;
+}
+
+.hero-image-container {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  position: relative;
+  background-color: #f8f9fa;
+}
+
+/* 3. Prévention du CLS pour les cartes */
+.card {
+  min-height: 350px;
+}
+
+.portfolio-item {
+  min-height: 400px;
+}
+
+.service-card {
+  min-height: 300px;
+}
+
+.testimonial-card {
+  min-height: 250px;
+}
+
+/* 4. Hauteurs fixes pour les sections importantes */
+.navbar {
+  min-height: 76px;
+}
+
+.footer {
+  min-height: 200px;
+}
+
+.page-header {
+  min-height: 300px;
+}
+
+/* 5. Réservation d'espace pour les contenus dynamiques */
+.blog-content {
+  min-height: 400px;
+}
+
+.contact-form {
+  min-height: 500px;
+}
+
+/* 6. Optimisation des polices pour éviter le FOIT/FOUT */
+@font-face {
+  font-family: 'Montserrat';
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/montserrat/v25/JTUSjIg1_i6t8kCHKm459W1hyyTh89ZNpQ.woff2') format('woff2');
+}
+
+/* 7. Dimensions responsive avec ratios fixes */
+@media (max-width: 768px) {
+  .hero-image {
+    aspect-ratio: 4/3;
+  }
+  
+  .portfolio-image {
+    aspect-ratio: 1;
+  }
+  
+  .service-image {
+    aspect-ratio: 4/3;
+  }
+  
+  .card {
+    min-height: 300px;
+  }
+  
+  .portfolio-item {
+    min-height: 350px;
+  }
+}
+
+/* 8. Skeleton loading pour éviter les changements de layout */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 4px;
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  width: 70%;
+}
+
+.skeleton-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 9. Stabilisation des animations */
+.motion-safe {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 10. Optimisation des transitions pour éviter les reflows */
+.card,
+.btn,
+.nav-link {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  will-change: transform;
+}
+
+/* 11. Conteneurs avec contain pour limiter les recalculs */
+.section {
+  contain: layout style;
+}
+
+.card {
+  contain: layout;
+}
+
+.navbar {
+  contain: layout;
+}
+
+.footer {
+  contain: layout;
+}
+
+/* 12. Éviter les changements de hauteur sur hover */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  /* Ne pas changer les marges/padding sur hover */
+}
+
+/* 13. Stabilisation des modales */
+.modal-content {
+  min-height: 200px;
+}
+
+.modal-body {
+  min-height: 150px;
+}
+
+/* 14. Optimisation des listes */
+.list-group-item {
+  min-height: 3rem;
+}
+
+/* 15. Réservation d'espace pour les icônes */
+.icon-box {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+/* 16. Dimensions fixes pour les badges */
+.badge {
+  min-width: 3rem;
+  min-height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 17. Optimisation des grilles */
+.row {
+  --bs-gutter-y: 1.5rem;
+}
+
+.col,
+.col-md-6,
+.col-lg-4,
+.col-lg-6 {
+  min-height: 1px; /* Évite l'effondrement */
+}
+
+/* 18. Stabilisation des formulaires */
+.form-control {
+  min-height: 38px;
+}
+
+.form-select {
+  min-height: 38px;
+}
+
+.btn {
+  min-height: 38px;
+  min-width: 80px;
+}
+
+/* 19. Éviter les changements de layout dans les animations */
+.fade-in,
+.slide-up,
+.slide-right,
+.slide-left {
+  transform: translateZ(0);
+}
+
+/* 20. Optimisation des tooltips et popovers */
+.tooltip,
+.popover {
+  will-change: transform, opacity;
+}

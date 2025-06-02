@@ -112,10 +112,11 @@ const Contact = () => {
 
   // Configuration SEO de la page
   const seoData = {
-    title: "Contactez-nous",
-    description: "Contactez l'équipe WebKlor pour discuter de votre projet de création de site web, SEO, marketing digital ou identité visuelle. Nous sommes à votre écoute.",
-    keywords: "contact, devis, formulaire contact, coordonnées, WebKlor",
-    canonicalUrl: "https://www.webklor.com/contact"
+    title: "Contact WebKlor | Devis Gratuit & Consultation Personnalisée",
+    description: "Contactez l'équipe WebKlor pour votre projet digital. Devis gratuit sous 24h, consultation personnalisée et accompagnement expert pour création de site web, SEO, marketing digital et développement d'applications. Réponse rapide garantie, échange téléphonique possible.",
+    keywords: "contact webklor, devis gratuit site internet, consultation web gratuite, projet développement web, demande devis SEO, contact agence digitale, accompagnement personnalisé",
+    canonicalUrl: "https://www.webklor.com/contact",
+    schemaType: "contact"
   };
   // Configuration des animations au défilement
   const [formRef, formInView] = useInView({

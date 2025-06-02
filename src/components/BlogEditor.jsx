@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet, apiPost, apiPut } from '../services/api';
+import LazyImage from './LazyImage';
 import API_BASE_URL from '../utils/apiConfig';
 
 /**
@@ -258,14 +259,16 @@ const BlogEditor = () => {
                   <Col md={4}>
                     {/* Image à la une */}
                     <Form.Group className="mb-3">
-                      <Form.Label>Image à la une</Form.Label>
-                      <div className="mb-2">
+                      <Form.Label>Image à la une</Form.Label>                      <div className="mb-2">
                         {previewImage ? (
-                          <img
+                          <LazyImage
                             src={previewImage}
                             alt="Aperçu"
                             className="img-fluid rounded"
                             style={{ maxHeight: '200px', objectFit: 'cover' }}
+                            width="300"
+                            height="200"
+                            sizes="300px"
                           />
                         ) : (
                           <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '200px' }}>

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
+import LazyImage from './LazyImage';
 import '../styles/admin.css';
 
 /**
@@ -25,15 +26,17 @@ const AdminLayout = ({ children, title = "Administration" }) => {
     <>
       <header className="bg-dark text-white py-3 mb-4 shadow admin-header">
         <Container>
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="d-flex align-items-center">
-              <img 
+          <div className="d-flex justify-content-between align-items-center">            <div className="d-flex align-items-center">
+              <LazyImage 
                 src="/assets/images/logo.png" 
                 alt="WebKlor" 
                 height="40" 
+                width="120"
                 className="me-3 admin-logo" 
                 onClick={() => navigate('/admin')}
                 style={{ cursor: 'pointer' }}
+                priority={true}
+                sizes="120px"
               />
               <h4 className="mb-0">{title}</h4>
             </div>

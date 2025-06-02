@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
+import LazyImage from '../components/LazyImage';
 import { containerVariants, itemVariants } from '../utils/animations';
 
 /**
@@ -22,10 +23,11 @@ const Blog = () => {
 
   // Configuration SEO de la page
   const seoData = {
-    title: "Blog & Actualités",
-    description: "Découvrez nos conseils, tendances et actualités sur la création de sites web, le SEO, le marketing digital et l'identité visuelle.",
-    keywords: "blog, actualités, conseils web, tendances digitales, SEO, marketing digital, WebKlor",
-    canonicalUrl: "https://www.webklor.com/blog"
+    title: "Blog WebKlor | Actualités Web, SEO & Marketing Digital",
+    description: "Articles d'experts sur le développement web, référencement SEO, marketing digital et dernières tendances technologiques. Guides pratiques, conseils professionnels, astuces techniques et analyses approfondies pour optimiser votre présence digitale. Contenu mis à jour régulièrement par l'équipe WebKlor.",
+    keywords: "blog développement web, actualités SEO, conseils marketing digital, guides techniques web, tendances technologiques, astuces webmaster, tutoriels développement, stratégies digitales",
+    canonicalUrl: "https://www.webklor.com/blog",
+    schemaType: "blog"
   };
   
   // Configuration des animations au défilement
@@ -141,12 +143,14 @@ const Blog = () => {
                       <motion.div variants={itemVariants}>
                         <Card className="blog-card h-100 border-0 shadow-sm">
                           <div className="blog-image-container" style={{ height: "200px", overflow: "hidden" }}>
-                            <Card.Img 
-                              variant="top" 
+                            <LazyImage 
                               src={post.featuredImage} 
                               alt={post.title}
                               className="img-fluid"
                               style={{ objectFit: "cover", height: "100%", width: "100%" }}
+                              width="350"
+                              height="200"
+                              sizes="(max-width: 768px) 100vw, (max-width: 992px) 50vw, 33vw"
                             />
                           </div>
                           <Card.Body>

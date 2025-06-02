@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet, apiDelete } from '../services/api';
 import SEO from '../components/SEO';
+import LazyImage from '../components/LazyImage';
 import API_BASE_URL from '../utils/apiConfig';
 
 /**
@@ -301,16 +302,16 @@ const AdminBlog = () => {
                       <tbody>
                         {posts.map((post) => (
                           <tr key={post._id}>
-                            <td>
-                              <div className="d-flex align-items-center">
+                            <td>                              <div className="d-flex align-items-center">
                                 {post.featuredImage && (
-                                  <img 
+                                  <LazyImage 
                                     src={post.featuredImage}
                                     alt={post.title}
                                     className="me-2"
                                     width="40"
                                     height="40"
                                     style={{ objectFit: 'cover', borderRadius: '4px' }}
+                                    sizes="40px"
                                   />
                                 )}
                                 <div>

@@ -144,26 +144,7 @@ const SEO = ({
       <meta name="twitter:image" content={completeImageUrl} />
       <meta name="twitter:creator" content="@webklor" />
       
-      {/* Google Analytics (gtag.js) */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-FWGHPFWF0T"></script>
-      <script>
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-FWGHPFWF0T');
-        `}
-      </script>
-      
-      {/* Google AdSense */}
-      <script 
-        async 
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1157924148207745"
-        crossOrigin="anonymous"
-        data-ad-client="ca-pub-1157924148207745"
-      ></script>
-      
-      {/* Schema.org JSON-LD */}
+      {/* Schema.org JSON-LD - Charge immédiatement pour le SEO */}
       <script type="application/ld+json">
         {JSON.stringify(generateSchema())}
       </script>

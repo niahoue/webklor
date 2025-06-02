@@ -69,12 +69,35 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
+# Variables d'environnement - SÉCURITÉ CRITIQUE
 .env
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local
-.env.local
+.env.production
+.env.*
+!.env.example
+
+# Fichiers de configuration sensibles du serveur
+server/.env
+server/.env.local
+server/.env.production
+api/.env
+api/.env.local
+
+# Clés et certificats
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+
+# Bases de données locales
+*.db
+*.sqlite
+*.sqlite3
+local_db/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -180,7 +203,15 @@ test-admin-features.md
 validate-admin.sh
 verify-refactoring.sh
 
-# Fichiers de configuration sensibles
-server/.env.production
-*.env.local
-.env.production
+# Logs et fichiers temporaires de sécurité
+access.log
+error.log
+debug.log
+security.log
+
+# Sauvegardes et dumps
+backup/
+dumps/
+*.backup
+*.dump
+*.sql.gz

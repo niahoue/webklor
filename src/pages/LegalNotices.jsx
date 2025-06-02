@@ -10,14 +10,14 @@ import { SITE_CONFIG } from '../utils/constants';
  * Page Mentions Légales
  * Contient toutes les informations légales obligatoires pour le site WebKlor
  */
-const LegalNotices = () => {
-  // Configuration SEO de la page
+const LegalNotices = () => {  // Configuration SEO de la page
   const seoData = {
-    title: "Mentions Légales",
-    description: "Mentions légales du site WebKlor - Informations sur l'éditeur, l'hébergeur et les conditions d'utilisation.",
-    keywords: "mentions légales, éditeur, hébergeur, responsabilité, conditions utilisation",
+    title: "Mentions Légales WebKlor | Informations Légales & Conditions d'Utilisation",
+    description: "Mentions légales complètes du site WebKlor incluant informations sur l'éditeur, l'hébergeur, conditions d'utilisation et responsabilités. Conformité légale française pour agence web professionnelle. Toutes les informations juridiques obligatoires.",
+    keywords: "mentions légales webklor, informations légales agence web, éditeur site internet, hébergeur responsabilité, conditions utilisation, conformité juridique",
     canonicalUrl: "https://www.webklor.com/mentions-legales",
-    noindex: false
+    noindex: false,
+    schemaType: "legal"
   };
 
   // Configuration des animations au défilement

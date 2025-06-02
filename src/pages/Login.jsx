@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/login.css';
 import SEO from '../components/SEO';
+import LazyImage from '../components/LazyImage';
 
 /**
  * Composant de page de connexion
@@ -71,9 +72,16 @@ const Login = () => {
           <Row className="justify-content-center align-items-center vh-100">
             <Col md={6} lg={5}>
               <Card className="login-card">
-                <Card.Header className="text-center">
-                  <div className="logo-container">
-                    <img src="/assets/images/logo.png" alt="Logo WebKlor" className="img-fluid" />
+                <Card.Header className="text-center">                  <div className="logo-container">
+                    <LazyImage 
+                      src="/assets/images/logo.png" 
+                      alt="Logo WebKlor" 
+                      className="img-fluid"
+                      width="150"
+                      height="60"
+                      sizes="150px"
+                      priority={true}
+                    />
                   </div>
                   <h1>Administration WebKlor</h1>
                 </Card.Header>

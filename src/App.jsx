@@ -13,6 +13,8 @@ import ConditionalFooter from './components/ConditionalFooter';
 import AccessibilityCheck from './components/AccessibilityCheck';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
+import ResourcePreloader from './components/ResourcePreloader';
+import ThirdPartyScripts from './components/ThirdPartyScripts';
 
 // Pages avec lazy loading pour optimiser le bundle
 const Home = lazy(() => import('./pages/Home'));
@@ -29,6 +31,10 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const Login = lazy(() => import('./pages/Login'));
 const ConfirmSubscription = lazy(() => import('./pages/ConfirmSubscription'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
+
+// Test component
+const TestCard = lazy(() => import('./components/TestCard'));
+const TestTestimonials = lazy(() => import('./components/TestTestimonials'));
 
 // Pages admin avec lazy loading
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
@@ -59,6 +65,8 @@ function App() {
     <ErrorBoundary>
       <HelmetProvider>
         <AuthProvider>
+          <ResourcePreloader />
+          <ThirdPartyScripts />
           <div className="app">
             <ConditionalNavbar />
             <AccessibilityCheck />
@@ -76,6 +84,8 @@ function App() {
                 <Route path="/services" element={<Services />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/temoignages" element={<Testimonials />} />
+                <Route path="/test-card" element={<TestCard />} />
+                <Route path="/test-testimonials" element={<TestTestimonials />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<Contact />} />

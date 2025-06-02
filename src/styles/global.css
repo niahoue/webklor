@@ -1,6 +1,9 @@
 /* Importation des variables CSS */
 @import './variables.css';
 
+/* Importation des styles de navigation améliorés */
+@import './navbar.css';
+
 /* Styles globaux */
 * {
   margin: 0;

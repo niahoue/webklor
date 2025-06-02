@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Badge, Spinner, Alert } from 'react-bootstra
 import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Comments from '../components/Comments';
+import LazyImage from '../components/LazyImage';
 
 /**
  * Composant d'affichage d'un article de blog
@@ -157,14 +158,17 @@ const BlogPost = () => {
       {post.featuredImage && (
         <section className="post-featured-image py-4">
           <Container>
-            <Row className="justify-content-center">
-              <Col lg={10}>
+            <Row className="justify-content-center">              <Col lg={10}>
                 <div className="featured-image-container" style={{ maxHeight: '500px', overflow: 'hidden' }}>
-                  <img 
+                  <LazyImage 
                     src={post.featuredImage} 
                     alt={post.title} 
                     className="img-fluid w-100 rounded shadow-sm"
                     style={{ objectFit: 'cover' }}
+                    width="800"
+                    height="500"
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    priority={true}
                   />
                 </div>
               </Col>
@@ -242,14 +246,16 @@ const BlogPost = () => {
                 <h3 className="mb-4">Articles liés</h3>
                 <Row>
                   {relatedPosts.map((relatedPost) => (
-                    <Col md={4} key={relatedPost._id} className="mb-4">
-                      <Card className="h-100 border-0 shadow-sm">
+                    <Col md={4} key={relatedPost._id} className="mb-4">                      <Card className="h-100 border-0 shadow-sm">
                         <div style={{ height: '160px', overflow: 'hidden' }}>
-                          <Card.Img 
-                            variant="top" 
+                          <LazyImage 
                             src={relatedPost.featuredImage} 
                             alt={relatedPost.title}
-                            style={{ objectFit: 'cover', height: '100%' }}
+                            className="img-fluid"
+                            style={{ objectFit: 'cover', height: '100%', width: '100%' }}
+                            width="300"
+                            height="160"
+                            sizes="(max-width: 768px) 100vw, 300px"
                           />
                         </div>
                         <Card.Body>

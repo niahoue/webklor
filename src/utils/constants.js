@@ -96,6 +96,14 @@ export const COMPANY_STATS = [
   { number: "24/7", label: "Support client" }
 ];
 
+// Statistiques spécifiques aux témoignages
+export const TESTIMONIAL_STATS = [
+  { number: "4.9/5", label: "Note moyenne", icon: "bi-star-fill", color: "warning" },
+  { number: "98%", label: "Recommandations", icon: "bi-heart-fill", color: "danger" },
+  { number: "150+", label: "Avis clients", icon: "bi-chat-quote-fill", color: "info" },
+  { number: "85%", label: "Projets répétés", icon: "bi-arrow-repeat", color: "success" }
+];
+
 // Valeurs de l'entreprise
 export const COMPANY_VALUES = [
   {
@@ -126,49 +134,113 @@ export const TESTIMONIALS = [
     id: 1,
     name: "Marie A kouassi",
     company: "Boutique Élégance",
+    sector: "E-commerce",
     image: "/assets/images/comment2.png",
     rating: 5,
-    text: "WebKlor a transformé notre présence en ligne avec un site e-commerce qui reflète parfaitement l'élégance de notre marque. Les ventes ont augmenté de 40% dès le premier mois après le lancement!"
+    text: "WebKlor a transformé notre présence en ligne avec un site e-commerce qui reflète parfaitement l'élégance de notre marque. Les ventes ont augmenté de 40% dès le premier mois après le lancement!",
+    projectType: "Site E-commerce",
+    duration: "3 mois",
+    results: "+40% de ventes en 1 mois",
+    services: ["Développement E-commerce", "Design UX/UI", "SEO"],
+    year: "2024"
   },
   {
     id: 2,
     name: "Hamadou Koné",
     company: "Immobilier Premium",
+    sector: "Immobilier",
     image: "/assets/images/profile2.png",
     rating: 5,
-    text: "L'équipe de WebKlor a su comprendre nos besoins spécifiques et créer une plateforme immobilière intuitive qui a révolutionné notre façon de présenter nos biens. Un travail remarquable!"
+    text: "L'équipe de WebKlor a su comprendre nos besoins spécifiques et créer une plateforme immobilière intuitive qui a révolutionné notre façon de présenter nos biens. Un travail remarquable!",
+    projectType: "Plateforme Web",
+    duration: "4 mois",
+    results: "Interface révolutionnaire",
+    services: ["Développement Web", "Base de données", "API"],
+    year: "2024"
   },
   {
     id: 3,
     name: "Sophie Martin",
     company: "Restaurant Le Gourmet",
+    sector: "Restauration",
     image: "/assets/images/profile_blanche.png",
     rating: 5,
-    text: "Notre nouveau site web et notre stratégie SEO mis en place par WebKlor nous ont permis d'augmenter significativement nos réservations en ligne. Un investissement qui a rapidement porté ses fruits."
+    text: "Notre nouveau site web et notre stratégie SEO mis en place par WebKlor nous ont permis d'augmenter significativement nos réservations en ligne. Un investissement qui a rapidement porté ses fruits.",
+    projectType: "Site Vitrine + SEO",
+    duration: "2 mois",
+    results: "+60% de réservations",
+    services: ["Site Vitrine", "SEO", "Marketing Digital"],
+    year: "2024"
   },
   {
     id: 4,
     name: "Jean Marie Attanou",
     company: "Cabinet Juridique Conseil",
+    sector: "Juridique",
     image: "/assets/images/profile3.png",
     rating: 4,
-    text: "Professionnalisme, réactivité et créativité sont les mots qui définissent WebKlor. Notre nouveau site corporate a considérablement amélioré notre image de marque et notre crédibilité."
+    text: "Professionnalisme, réactivité et créativité sont les mots qui définissent WebKlor. Notre nouveau site corporate a considérablement amélioré notre image de marque et notre crédibilité.",
+    projectType: "Site Corporate",
+    duration: "2.5 mois",
+    results: "Image de marque renforcée",
+    services: ["Site Corporate", "Identité Visuelle", "Branding"],
+    year: "2024"
   },
   {
     id: 5,
     name: "Léa Essou",
     company: "École de Langues Internationale",
+    sector: "Éducation",
     image: "/assets/images/profile4.png",
     rating: 5,
-    text: "La plateforme éducative développée par WebKlor a transformé notre façon d'enseigner. L'interface intuitive et les fonctionnalités sur mesure ont enchanté nos étudiants et nos professeurs."
+    text: "La plateforme éducative développée par WebKlor a transformé notre façon d'enseigner. L'interface intuitive et les fonctionnalités sur mesure ont enchanté nos étudiants et nos professeurs.",
+    projectType: "Plateforme Éducative",
+    duration: "5 mois",
+    results: "Expérience d'apprentissage transformée",
+    services: ["Application Web", "LMS", "UX/UI Design"],
+    year: "2024"
   },
   {
     id: 6,
     name: "Alexandre Abiali",
     company: "Clinique Bien-Être",
+    sector: "Santé",
     image: "/assets/images/profile5.png",
     rating: 5,
-    text: "WebKlor a créé pour nous une identité visuelle cohérente et moderne qui nous démarque de la concurrence. Le logo et les supports marketing sont exactement ce que nous recherchions."
+    text: "WebKlor a créé pour nous une identité visuelle cohérente et moderne qui nous démarque de la concurrence. Le logo et les supports marketing sont exactement ce que nous recherchions.",
+    projectType: "Identité Visuelle",
+    duration: "1.5 mois",
+    results: "Différenciation concurrentielle",
+    services: ["Logo Design", "Charte Graphique", "Supports Marketing"],
+    year: "2024"
+  },
+  {
+    id: 7,
+    name: "Fatou Traoré",
+    company: "Startup TechInnovate",
+    sector: "Technologie",
+    image: "/assets/images/startup.png",
+    rating: 5,
+    text: "WebKlor nous a accompagnés depuis nos débuts. Leur expertise technique et leur compréhension de nos enjeux startup ont été déterminantes pour notre croissance. Une équipe au top!",
+    projectType: "Application SaaS",
+    duration: "6 mois",
+    results: "Croissance accélérée",
+    services: ["Développement SaaS", "MVP", "Scaling"],
+    year: "2024"
+  },
+  {
+    id: 8,
+    name: "Mohamed Cissé",
+    company: "Logistics Pro",
+    sector: "Logistique",
+    image: "/assets/images/logistics.png",
+    rating: 4,
+    text: "La solution de gestion logistique développée par WebKlor a optimisé nos processus et réduit nos coûts de 25%. Une équipe technique très compétente qui comprend les enjeux métier.",
+    projectType: "Application Métier",
+    duration: "4 mois",
+    results: "-25% de coûts opérationnels",
+    services: ["Application Métier", "Intégration ERP", "Optimisation"],
+    year: "2024"
   }
 ];
 

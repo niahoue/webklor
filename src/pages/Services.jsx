@@ -3,6 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useInView } from 'react-intersection-observer';
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
+import LazyImage from '../components/LazyImage';
 import { containerVariants, itemVariants } from '../utils/animations';
 import { WORK_PROCESS } from '../utils/constants';
 
@@ -13,10 +14,11 @@ import { WORK_PROCESS } from '../utils/constants';
 const Services = () => {
   // Configuration SEO de la page
   const seoData = {
-    title: "Nos Services",
-    description: "Découvrez nos services de création de sites web, SEO, marketing digital, identité visuelle et maintenance web pour propulser votre entreprise vers le succès.",
-    keywords: "création site web, SEO, marketing digital, identité visuelle, logo, flyers, maintenance web, WebKlor",
-    canonicalUrl: "https://www.webklor.com/services"
+    title: "Services Web Professionnels - Création Sites & Développement Applications",
+    description: "Services complets de création de sites web professionnels, développement d'applications, e-commerce, SEO et marketing digital. Solutions sur mesure pour entreprises et professionnels. Devis gratuit, accompagnement expert de A à Z.",
+    keywords: "services web professionnels, création site internet sur mesure, développement application web, e-commerce professionnel, SEO technique, marketing digital, maintenance web, conception web, sites responsives",
+    canonicalUrl: "https://www.webklor.com/services",
+    schemaType: "service"
   };
   // Configuration des animations au défilement
   const [servicesRef, servicesInView] = useInView({
@@ -52,10 +54,13 @@ const Services = () => {
             <Row className="mb-5">
               <Col lg={6} className="mb-4 mb-lg-0">
                 <motion.div variants={itemVariants}>
-                  <img
+                  <LazyImage
                     src="/assets/images/devop.png"
                     alt="Création de sites web professionnels"
                     className="img-fluid rounded-lg shadow-lg"
+                    width="600"
+                    height="400"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </motion.div>
               </Col>
@@ -106,10 +111,13 @@ const Services = () => {
             <Row className="mb-5 mt-5 pt-5">
               <Col lg={6} className="mb-4 mb-lg-0">
                 <motion.div variants={itemVariants}>
-                  <img
+                  <LazyImage
                     src="/assets/images/designer.png"
                     alt="Création d'identité visuelle"
                     className="img-fluid rounded-lg shadow-lg"
+                    width="600"
+                    height="400"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </motion.div>
               </Col>
@@ -133,10 +141,13 @@ const Services = () => {
             <Row className="mt-5 pt-5">
               <Col lg={6} className="order-lg-2 mb-4 mb-lg-0">
                 <motion.div variants={itemVariants}>
-                  <img
+                  <LazyImage
                     src="/assets/images/1000061493.png"
                     alt="Maintenance de sites web"
                     className="img-fluid rounded-lg shadow-lg"
+                    width="600"
+                    height="400"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </motion.div>
               </Col>
@@ -194,6 +205,98 @@ const Services = () => {
                   </motion.div>
                 </Col>
               ))}
+            </Row>
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* Section Contenu SEO Enrichi */}
+      <section className="seo-content-enriched py-5 bg-light">
+        <Container>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="py-4"
+          >
+            <Row>
+              <Col lg={8} className="mx-auto">
+                <motion.div variants={itemVariants} className="text-center mb-5">
+                  <h2 className="fw-bold mb-4">Expertise Technique et Solutions Digitales Complètes</h2>
+                  <p className="lead">
+                    WebKlor combine expertise technique avancée et vision stratégique pour délivrer des solutions digitales qui transforment votre présence en ligne et accélèrent votre croissance business.
+                  </p>
+                </motion.div>
+
+                <Row className="g-4">
+                  <Col md={6}>
+                    <motion.div variants={itemVariants} className="h-100">
+                      <h3 className="h4 fw-bold mb-3">🚀 Développement Web Avancé</h3>
+                      <p className="mb-3">
+                        Notre équipe maîtrise les technologies web les plus récentes : React, Node.js, PHP, Laravel, WordPress, Shopify et WooCommerce. Nous développons des applications web performantes, scalables et sécurisées, optimisées pour le référencement naturel et la conversion.
+                      </p>
+                      <ul className="list-unstyled">
+                        <li>• Architecture moderne et évolutive</li>
+                        <li>• Performance et vitesse de chargement optimales</li>
+                        <li>• Sécurité renforcée et conformité RGPD</li>
+                        <li>• Intégration API et systèmes tiers</li>
+                      </ul>
+                    </motion.div>
+                  </Col>
+                  
+                  <Col md={6}>
+                    <motion.div variants={itemVariants} className="h-100">
+                      <h3 className="h4 fw-bold mb-3">🎯 Stratégie SEO et Marketing Digital</h3>
+                      <p className="mb-3">
+                        Nos experts SEO certifiés optimisent votre visibilité sur Google grâce à une approche technique et éditoriale complète. Nous combinons SEO on-page, link building, content marketing et analytics pour maximiser votre ROI digital.
+                      </p>
+                      <ul className="list-unstyled">
+                        <li>• Audit SEO technique complet</li>
+                        <li>• Optimisation Core Web Vitals</li>
+                        <li>• Stratégie de contenu et mots-clés</li>
+                        <li>• Campagnes Google Ads et Social Media</li>
+                      </ul>
+                    </motion.div>
+                  </Col>
+
+                  <Col md={6}>
+                    <motion.div variants={itemVariants} className="h-100">
+                      <h3 className="h4 fw-bold mb-3">🛒 E-commerce et Solutions Métier</h3>
+                      <p className="mb-3">
+                        Nous concevons des boutiques en ligne sur mesure avec WooCommerce, Shopify ou PrestaShop, intégrant systèmes de paiement sécurisés, gestion des stocks, CRM et outils d'analyse pour optimiser vos ventes en ligne et votre gestion commerciale.
+                      </p>
+                      <ul className="list-unstyled">
+                        <li>• Boutiques e-commerce conversion-optimisées</li>
+                        <li>• Systèmes de paiement multi-devises</li>
+                        <li>• Intégration ERP et logistique</li>
+                        <li>• Marketplace et places de marché</li>
+                      </ul>
+                    </motion.div>
+                  </Col>
+
+                  <Col md={6}>
+                    <motion.div variants={itemVariants} className="h-100">
+                      <h3 className="h4 fw-bold mb-3">🛠️ Maintenance et Support Technique</h3>
+                      <p className="mb-3">
+                        Nos contrats de maintenance garantissent la pérennité de votre site web : mises à jour sécuritaires, sauvegardes automatiques, monitoring 24/7, support technique réactif et évolutions fonctionnelles pour maintenir votre avantage concurrentiel.
+                      </p>
+                      <ul className="list-unstyled">
+                        <li>• Monitoring proactif et alertes</li>
+                        <li>• Mises à jour sécuritaires automatiques</li>
+                        <li>• Support technique prioritaire</li>
+                        <li>• Évolutions et nouvelles fonctionnalités</li>
+                      </ul>
+                    </motion.div>
+                  </Col>
+                </Row>
+
+                <motion.div variants={itemVariants} className="text-center mt-5">
+                  <p className="lead">
+                    <strong>Plus de 150 projets réalisés</strong> pour des entreprises de tous secteurs : santé, immobilier, e-commerce, services B2B, startups et grands comptes. 
+                    Nos clients bénéficient d'une <strong>amélioration moyenne de 300% de leur trafic organique</strong> et d'un <strong>taux de conversion augmenté de 45%</strong> grâce à nos optimisations techniques et UX.
+                  </p>
+                </motion.div>
+              </Col>
             </Row>
           </motion.div>
         </Container>

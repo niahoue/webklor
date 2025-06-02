@@ -10,14 +10,14 @@ import { SITE_CONFIG } from '../utils/constants';
  * Page Politique de Confidentialité
  * Détaille la collecte, l'utilisation et la protection des données personnelles
  */
-const PrivacyPolicy = () => {
-  // Configuration SEO de la page
+const PrivacyPolicy = () => {  // Configuration SEO de la page
   const seoData = {
-    title: "Politique de Confidentialité",
-    description: "Politique de confidentialité de WebKlor - Comment nous collectons, utilisons et protégeons vos données personnelles.",
-    keywords: "politique confidentialité, données personnelles, RGPD, protection données, vie privée",
+    title: "Politique de Confidentialité WebKlor | Protection des Données RGPD",
+    description: "Politique de confidentialité complète de WebKlor conforme au RGPD. Découvrez comment nous collectons, utilisons, stockons et protégons vos données personnelles. Transparence totale sur nos pratiques de protection de la vie privée et droits des utilisateurs.",
+    keywords: "politique confidentialité webklor, protection données personnelles, RGPD conforme, vie privée numérique, sécurité données, droits utilisateurs, cookies",
     canonicalUrl: "https://www.webklor.com/politique-confidentialite",
-    noindex: false
+    noindex: false,
+    schemaType: "policy"
   };
 
   // Configuration des animations au défilement

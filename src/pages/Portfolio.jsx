@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
+import LazyImage from '../components/LazyImage';
 import { containerVariants, itemVariants } from '../utils/animations';
 
 /**
@@ -37,10 +38,11 @@ const Portfolio = () => {
   
   // Configuration SEO de la page
   const seoData = {
-    title: "Notre Portfolio",
-    description: "Découvrez nos réalisations et projets en création de sites web, applications, e-commerce et identité visuelle pour des clients de tous secteurs.",
-    keywords: "portfolio, projets, réalisations, sites web, applications, e-commerce, identité visuelle, WebKlor",
-    canonicalUrl: "https://www.webklor.com/portfolio"
+    title: "Portfolio - WebKlor | Nos Réalisations Web & Applications Professionnelles",
+    description: "Découvrez plus de 150 projets web réalisés par WebKlor : sites vitrine modernes, e-commerce performants, applications métier innovantes et identités visuelles créatives. Références clients dans tous secteurs d'activité depuis 2020. Expertise confirmée en développement web, UX/UI design et solutions digitales sur mesure.",
+    keywords: "portfolio webklor, réalisations sites web, projets développement web, références clients, sites vitrine professionnels, e-commerce sur mesure, applications web, identité visuelle, design UI/UX, solutions digitales",
+    canonicalUrl: "https://www.webklor.com/portfolio",
+    schemaType: "portfolio"
   };
   // Configuration des animations au défilement
   const [projectsRef, projectsInView] = useInView({
@@ -148,13 +150,14 @@ const Portfolio = () => {
                 <Col lg={4} md={6} key={project.id} className="mb-4">
                   <motion.div variants={itemVariants}>
                     <Card className="portfolio-item border-0 shadow-sm h-100">
-                      <div className="portfolio-image-container" style={{ height: "200px", overflow: "hidden" }}>
-                        <Card.Img 
-                          variant="top" 
+                      <div className="portfolio-image-container">
+                        <LazyImage
                           src={project.image} 
                           alt={project.title}
-                          className="img-fluid"
-                          style={{ objectFit: "cover", height: "100%", width: "100%" }}
+                          className="portfolio-image"
+                          width="400"
+                          height="250"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                       </div>
                       <Card.Body>

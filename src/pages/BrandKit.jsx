@@ -3,6 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useInView } from 'react-intersection-observer';
 import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
+import LazyImage from '../components/LazyImage';
 import { containerVariants, itemVariants } from '../utils/animations';
 
 /**
@@ -12,10 +13,11 @@ import { containerVariants, itemVariants } from '../utils/animations';
 const BrandKit = () => {
   // Configuration SEO de la page
   const seoData = {
-    title: "Kit de Marque",
-    description: "Découvrez les éléments qui composent l'identité visuelle de WebKlor : logo, typographie, palette de couleurs et applications sur différents supports.",
-    keywords: "kit de marque, identité visuelle, logo, typographie, palette de couleurs, charte graphique, WebKlor",
-    canonicalUrl: "https://www.webklor.com/kit-de-marque"
+    title: "Kit de Marque WebKlor | Identité Visuelle & Ressources Graphiques",
+    description: "Explorez l'univers visuel de WebKlor : logo haute définition, palette de couleurs officielles, typographies utilisées, déclinaisons graphiques et guidelines d'utilisation. Ressources téléchargeables pour partenaires et médias. Identité de marque moderne et professionnelle.",
+    keywords: "kit de marque webklor, identité visuelle agence web, logo webklor, palette couleurs, typographie brand, charte graphique, ressources graphiques, guidelines marque",
+    canonicalUrl: "https://www.webklor.com/kit-de-marque",
+    schemaType: "brand"
   };
   // Configuration des animations au défilement
   const [elementsRef, elementsInView] = useInView({
@@ -55,19 +57,26 @@ const BrandKit = () => {
                     Le logo WebKlor est l'élément central de notre identité visuelle. Il représente notre engagement envers l'innovation, la créativité et l'excellence dans le domaine digital.
                   </p>
                   <div className="logo-showcase bg-light p-5 text-center rounded-lg shadow-sm mb-4">
-                    <img 
-                      src="/assets/images/1000059595.png" 
-                      alt="Logo WebKlor" 
-                      className="img-fluid" 
+                    <LazyImage
+                      src="/assets/images/1000059595.png"
+                      alt="Logo WebKlor"
+                      className="img-fluid"
                       style={{ maxWidth: "250px" }}
+                      width="250"
+                      height="100"
+                      sizes="250px"
+                      priority={true}
                     />
                   </div>
                   <div className="logo-showcase bg-primary p-5 text-center rounded-lg shadow-sm">
-                    <img 
-                      src="/assets/images/1000059595.png" 
-                      alt="Logo WebKlor sur fond coloré" 
-                      className="img-fluid" 
+                    <LazyImage
+                      src="/assets/images/1000059595.png"
+                      alt="Logo WebKlor sur fond coloré"
+                      className="img-fluid"
                       style={{ maxWidth: "250px" }}
+                      width="250"
+                      height="100"
+                      sizes="250px"
                     />
                   </div>
                 </motion.div>
@@ -191,11 +200,14 @@ const BrandKit = () => {
                 <motion.div variants={itemVariants}>
                   <h3 className="h4 mb-3">Carte de Visite</h3>
                   <div className="bg-light p-4 rounded-lg shadow-sm text-center">
-                    <img 
-                      src="/assets/images/1000059597.png" 
-                      alt="Carte de visite WebKlor" 
-                      className="img-fluid rounded-lg shadow-sm" 
+                    <LazyImage
+                      src="/assets/images/1000059597.png"
+                      alt="Carte de visite WebKlor"
+                      className="img-fluid rounded-lg shadow-sm"
                       style={{ maxWidth: "350px" }}
+                      width="350"
+                      height="200"
+                      sizes="(max-width: 768px) 100vw, 350px"
                     />
                   </div>
                 </motion.div>
@@ -204,10 +216,13 @@ const BrandKit = () => {
                 <motion.div variants={itemVariants}>
                   <h3 className="h4 mb-3">Bannière Web</h3>
                   <div className="bg-light p-4 rounded-lg shadow-sm text-center">
-                    <img 
-                      src="/assets/images/1000059598.png" 
-                      alt="Bannière WebKlor" 
+                    <LazyImage
+                      src="/assets/images/1000059598.png"
+                      alt="Bannière WebKlor"
                       className="img-fluid rounded-lg shadow-sm"
+                      width="600"
+                      height="300"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
                 </motion.div>
@@ -216,11 +231,14 @@ const BrandKit = () => {
                 <motion.div variants={itemVariants}>
                   <h3 className="h4 mb-3">Photo de Profil</h3>
                   <div className="bg-light p-4 rounded-lg shadow-sm text-center">
-                    <img 
-                      src="/assets/images/1000059597.png" 
-                      alt="Photo de profil WebKlor" 
-                      className="img-fluid rounded-circle shadow-sm" 
+                    <LazyImage
+                      src="/assets/images/1000059597.png"
+                      alt="Photo de profil WebKlor"
+                      className="img-fluid rounded-circle shadow-sm"
                       style={{ maxWidth: "200px" }}
+                      width="200"
+                      height="200"
+                      sizes="200px"
                     />
                   </div>
                 </motion.div>
@@ -229,11 +247,14 @@ const BrandKit = () => {
                 <motion.div variants={itemVariants}>
                   <h3 className="h4 mb-3">Post Carré pour Réseaux Sociaux</h3>
                   <div className="bg-light p-4 rounded-lg shadow-sm text-center">
-                    <img 
-                      src="/assets/images/1000061493.png" 
-                      alt="Post carré WebKlor" 
-                      className="img-fluid rounded-lg shadow-sm" 
+                    <LazyImage
+                      src="/assets/images/1000061493.png"
+                      alt="Post carré WebKlor"
+                      className="img-fluid rounded-lg shadow-sm"
                       style={{ maxWidth: "350px" }}
+                      width="350"
+                      height="350"
+                      sizes="(max-width: 768px) 100vw, 350px"
                     />
                   </div>
                 </motion.div>
