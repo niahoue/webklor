@@ -7,6 +7,7 @@ import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import LazyImage from '../components/LazyImage';
 import { containerVariants, itemVariants } from '../utils/animations';
+import '../styles/portfolio-responsive.css';
 
 /**
  * Page Portfolio
@@ -131,16 +132,18 @@ const Portfolio = () => {
           >
             {/* Filtres de catégories */}
             <motion.div variants={itemVariants} className="text-center mb-5">
-              <div className="btn-group">
-                {categories.map((category, index) => (
-                  <button
-                    key={index}
-                    className={`btn ${category === activeCategory ? 'btn-primary' : 'btn-outline-primary'}`}
-                    onClick={() => handleCategoryFilter(category)}
-                  >
-                    {category}
-                  </button>
-                ))}
+              <div className="portfolio-filters">
+                <div className="btn-group">
+                  {categories.map((category, index) => (
+                    <button
+                      key={index}
+                      className={`btn ${category === activeCategory ? 'btn-primary' : 'btn-outline-primary'}`}
+                      onClick={() => handleCategoryFilter(category)}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
               </div>
             </motion.div>
 
@@ -149,7 +152,7 @@ const Portfolio = () => {
               {filteredProjects.map((project) => (
                 <Col lg={4} md={6} key={project.id} className="mb-4">
                   <motion.div variants={itemVariants}>
-                    <Card className="portfolio-item border-0 shadow-sm h-100">
+                    <Card className="portfolio-item border-0 shadow-sm h-100" role="article">
                       <div className="portfolio-image-container">
                         <LazyImage
                           src={project.image} 
@@ -164,7 +167,7 @@ const Portfolio = () => {
                         <span className="badge bg-primary mb-2">{project.category}</span>
                         <Card.Title as="h3" className="h5">{project.title}</Card.Title>
                         <Card.Text>{project.description}</Card.Text>
-                        <div className="mt-3">
+                        <div className="technology-badges">
                           {project.technologies.map((tech, index) => (
                             <span key={index} className="badge bg-light text-dark me-2 mb-2">
                               {tech}
@@ -176,6 +179,7 @@ const Portfolio = () => {
                         <button 
                           className="btn btn-sm btn-outline-primary"
                           onClick={() => handleShowProjectModal(project)}
+                          aria-label={`Voir les détails du projet ${project.title}`}
                         >
                           Voir le projet
                         </button>
@@ -214,6 +218,7 @@ const Portfolio = () => {
         size="lg" 
         centered
         aria-labelledby="project-details-modal"
+        className="portfolio-modal"
       >
         {selectedProject && (
           <>
@@ -240,7 +245,7 @@ const Portfolio = () => {
               <p><span className="badge bg-primary">{selectedProject.category || 'Non catégorisé'}</span></p>
               
               <h4 className="mb-3 mt-4">Technologies utilisées</h4>
-              <div>
+              <div className="technology-badges">
                 {selectedProject.technologies && selectedProject.technologies.map((tech, index) => (
                   <span key={index} className="badge bg-light text-dark me-2 mb-2">
                     {tech}
