@@ -215,3 +215,4 @@ dumps/
 *.backup
 *.dump
 *.sql.gz
+.vercel
