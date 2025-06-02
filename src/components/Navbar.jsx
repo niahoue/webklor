@@ -108,7 +108,7 @@ const NavbarComponent = () => {
                 style={{
                   fontWeight: '700',
                   fontSize: '1.5rem',
-                  color: scrolled ? 'var(--primary)' : '#fff',
+                  color: scrolled ? '#007bff' : '#fff',
                   textShadow: scrolled ? 'none' : '0 2px 4px rgba(0,0,0,0.3)',
                   transition: 'all 0.3s ease'
                 }}
@@ -126,7 +126,7 @@ const NavbarComponent = () => {
                 to={item.path}
                 className={`webklor-navbar-link ${location.pathname === item.path ? 'webklor-navbar-link-active' : ''}`}
                 style={{
-                  color: scrolled ? 'var(--primary)' : '#fff',
+                  color: scrolled ? '#007bff' : '#fff',
                   fontWeight: location.pathname === item.path ? '700' : '600',
                   fontSize: '1rem',
                   textDecoration: 'none',

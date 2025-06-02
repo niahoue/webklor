@@ -56,7 +56,7 @@ const Home = () => {
               <Col lg={6}>
                 <motion.h1 variants={itemVariants} className="display-4 fw-bold mb-4 text-dark">
                   Transformez Votre Présence Digitale avec 
-                  <span className="d-block text-primary">WebKlor</span>
+                  <span className="d-block" style={{ color: '#FFC107' }}>WebKlor</span>
                 </motion.h1>
                 <motion.p variants={itemVariants} className="lead mb-4 fs-5 text-dark">
                   Agence web d'excellence depuis 2020. Nous créons des expériences digitales exceptionnelles qui 
