@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
     const popularPosts = await Post.find({ status: 'publié' })
       .sort({ views: -1 })
       .limit(5)
-      .select('title status createdAt slug views');
+      .select('title slug status createdAt views author');
 
     // Articles récents
     const recentPosts = await Post.find()
@@ -43,23 +43,19 @@ module.exports = async (req, res) => {
       .limit(5)
       .select('title status createdAt slug');
 
-    // Statistiques par catégorie
+    // Statistiques par catégorie (VERSION SANS MODÈLE CATEGORY DÉDIÉ - si Post.category est un String)
     const categoryStats = await Post.aggregate([
       { $match: { status: 'publié' } },
-      { $group: { _id: '$category', count: { $sum: 1 } } },
-      { $sort: { count: -1 } }
+      { $group: { _id: '$category', count: { $sum: 1 } } }, // Groupement par le champ string 'category'
+      { $sort: { count: -1 } },
+      { $project: { _id: 0, name: '$_id', count: 1 } } // Renommer _id en name pour plus de clarté
     ]);
 
-    // Remplir les noms de catégories si possible
-    const categories = await require('../../../../models/category.model').find({}); // Assurez-vous d'importer votre modèle Category
-    const categoryMap = new Map(categories.map(cat => [cat._id.toString(), cat.name]));
-
-    const populatedCategoryStats = categoryStats.map(stat => ({
-        name: categoryMap.get(stat._id.toString()) || 'Inconnu',
-        count: stat.count
-    }));
-
-
+    // Pas besoin de peupler les noms de catégories ici, car le _id est déjà le nom de la catégorie (la chaîne).
+    // Si votre frontend s'attend à un champ 'slug' pour les catégories,
+    // vous devrez soit le générer ici, soit adapter le frontend.
+    // Pour l'instant, on assume que 'name' est suffisant.
+    
     res.status(200).json({
       success: true,
       data: {
@@ -73,7 +69,7 @@ module.exports = async (req, res) => {
         },
         popularPosts,
         recentPosts,
-        categoryStats: populatedCategoryStats
+        categoryStats: categoryStats // Utilisation directe des stats agrégées
       }
     });
   } catch (error) {
