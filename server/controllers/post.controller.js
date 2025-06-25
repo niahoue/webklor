@@ -1,5 +1,5 @@
 const Post = require('../models/post.model');
-const logger = require('../utils/logger.js')
+const logger =require('../utils/logger')
 
 /**
  * Contrôleur pour la gestion des articles de blog
@@ -102,7 +102,7 @@ const postController = {
         data: post
       });
     } catch (error) {
-      console.error('Erreur lors de la récupération de l\'article:', error);
+      logger.error('Erreur lors de la récupération de l\'article:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération de l\'article',
@@ -149,7 +149,7 @@ const postController = {
         data: post
       });
     } catch (error) {
-      console.error('Erreur lors de la création de l\'article:', error);
+      logger.error('Erreur lors de la création de l\'article:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la création de l\'article',
@@ -198,7 +198,7 @@ const postController = {
         data: post
       });
     } catch (error) {
-      console.error('Erreur lors de la mise à jour de l\'article:', error);
+      logger.error('Erreur lors de la mise à jour de l\'article:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la mise à jour de l\'article',
@@ -230,7 +230,7 @@ const postController = {
         message: 'Article supprimé avec succès'
       });
     } catch (error) {
-      console.error('Erreur lors de la suppression de l\'article:', error);
+      logger.error('Erreur lors de la suppression de l\'article:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la suppression de l\'article',
@@ -279,7 +279,7 @@ const postController = {
         }
       });
     } catch (error) {
-      console.error('Erreur lors de la récupération des statistiques du blog:', error);
+      logger.error('Erreur lors de la récupération des statistiques du blog:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération des statistiques du blog',
@@ -349,7 +349,7 @@ const postController = {
         data: posts
       });
     } catch (error) {
-      console.error('Erreur lors de la récupération des articles admin:', error);
+      logger.error('Erreur lors de la récupération des articles admin:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération des articles',
@@ -381,7 +381,7 @@ const postController = {
         data: post
       });
     } catch (error) {
-      console.error('Erreur lors de la récupération de l\'article:', error);
+      logger.error('Erreur lors de la récupération de l\'article:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération de l\'article',
@@ -428,7 +428,7 @@ const postController = {
         data: post
       });
     } catch (error) {
-      console.error('Erreur lors du changement de statut:', error);
+      logger.error('Erreur lors du changement de statut:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors du changement de statut',
@@ -456,7 +456,7 @@ const postController = {
         data: recentPosts
       });
     } catch (error) {
-      console.error('Erreur lors de la récupération des articles récents:', error);
+      logger.error('Erreur lors de la récupération des articles récents:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération des articles récents',

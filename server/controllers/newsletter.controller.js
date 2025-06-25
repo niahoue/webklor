@@ -1,7 +1,7 @@
 const { Subscriber, Newsletter } = require('../models/newsletter.model');
 const emailService = require('../utils/email.service');
 const crypto = require('crypto');
-const logger = require("logger")
+const logger =require('../utils/logger')
 
 /**
  * Contrôleur pour gérer les fonctionnalités de newsletter
@@ -102,7 +102,7 @@ const newsletterController = {
         message: "Votre abonnement a été confirmé avec succès.",
       });
     } catch (error) {
-      console.error("Erreur de confirmation d'abonnement:", error);
+      logger.error("Erreur de confirmation d'abonnement:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la confirmation de votre abonnement.",
@@ -139,7 +139,7 @@ const newsletterController = {
         message: "Vous avez été désabonné avec succès.",
       });
     } catch (error) {
-      console.error("Erreur de désabonnement:", error);
+      logger.error("Erreur de désabonnement:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors du désabonnement.",
@@ -173,7 +173,7 @@ const newsletterController = {
         data: newsletter,
       });
     } catch (error) {
-      console.error("Erreur de création de newsletter:", error);
+      logger.error("Erreur de création de newsletter:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la création de la newsletter.",
@@ -198,7 +198,7 @@ const newsletterController = {
         data: newsletters,
       });
     } catch (error) {
-      console.error("Erreur de récupération des newsletters:", error);
+      logger.error("Erreur de récupération des newsletters:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la récupération des newsletters.",
@@ -230,7 +230,7 @@ const newsletterController = {
         data: newsletter,
       });
     } catch (error) {
-      console.error("Erreur de récupération de la newsletter:", error);
+      logger.error("Erreur de récupération de la newsletter:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la récupération de la newsletter.",
@@ -279,7 +279,7 @@ const newsletterController = {
         data: newsletter,
       });
     } catch (error) {
-      console.error("Erreur de mise à jour de la newsletter:", error);
+      logger.error("Erreur de mise à jour de la newsletter:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la mise à jour de la newsletter.",
@@ -320,7 +320,7 @@ const newsletterController = {
         message: "Newsletter supprimée avec succès.",
       });
     } catch (error) {
-      console.error("Erreur de suppression de la newsletter:", error);
+      logger.error("Erreur de suppression de la newsletter:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la suppression de la newsletter.",
@@ -399,7 +399,7 @@ const newsletterController = {
         message: "Envoi de la newsletter en cours...",
       });
     } catch (error) {
-      console.error("Erreur d'envoi de la newsletter:", error);
+      logger.error("Erreur d'envoi de la newsletter:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de l'envoi de la newsletter.",
@@ -472,7 +472,7 @@ const newsletterController = {
         }))
       });
     } catch (error) {
-      console.error("Erreur de récupération des abonnés:", error);
+      logger.error("Erreur de récupération des abonnés:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la récupération des abonnés."
@@ -510,7 +510,7 @@ const newsletterController = {
         }
       });
     } catch (error) {
-      console.error("Erreur de récupération des statistiques:", error);
+      logger.error("Erreur de récupération des statistiques:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la récupération des statistiques."
@@ -575,7 +575,7 @@ const newsletterController = {
         data: subscriber
       });
     } catch (error) {
-      console.error("Erreur de mise à jour de l'abonné:", error);
+      logger.error("Erreur de mise à jour de l'abonné:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la mise à jour de l'abonné."
@@ -606,7 +606,7 @@ const newsletterController = {
         message: "Abonné supprimé avec succès."
       });
     } catch (error) {
-      console.error("Erreur de suppression de l'abonné:", error);
+      logger.error("Erreur de suppression de l'abonné:", error);
       res.status(500).json({
         success: false,
         message: "Une erreur est survenue lors de la suppression de l'abonné."

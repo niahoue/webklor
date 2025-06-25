@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
+const logger = require('./logger');
 
 /**
  * Service d'envoi d'emails avec configuration flexible et gestion d'erreurs améliorée
@@ -9,10 +10,11 @@ const emailService = {
    * Création du transporteur email avec gestion des différents services
    */
   getTransporter() {
-    try {      // Configuration pour SMTP personnalisé
+    try {
+      // Configuration pour SMTP personnalisé
       if (config.email.host) {
-        console.log('🔧 Configuration SMTP personnalisée');
-        return nodemailer.createTransport({
+        logger.info('🔧 Configuration SMTP personnalisée');
+        return nodemailer.createTransporter({
           host: config.email.host,
           port: config.email.port || 587,
           secure: config.email.secure || false, // true pour port 465, false pour autres
@@ -27,8 +29,8 @@ const emailService = {
       }
 
       // Configuration pour services tiers (Gmail, Outlook, etc.)
-      console.log(`🔧 Configuration service: ${config.email.service}`);
-      return nodemailer.createTransport({
+      logger.info(`🔧 Configuration service: ${config.email.service}`);
+      return nodemailer.createTransporter({
         service: config.email.service,
         auth: {
           user: config.email.user,
@@ -39,7 +41,7 @@ const emailService = {
         }
       });
     } catch (error) {
-      console.error('❌ Erreur création transporteur:', error);
+      logger.error('❌ Erreur création transporteur:', error);
       throw error;
     }
   },
@@ -59,7 +61,7 @@ const emailService = {
       throw new Error('Vous devez spécifier soit EMAIL_SERVICE soit EMAIL_HOST dans le fichier .env');
     }
 
-    console.log('✅ Configuration email validée');
+    logger.info('✅ Configuration email validée');
   },
 
   /**
@@ -67,14 +69,14 @@ const emailService = {
    */
   async testConnection() {
     try {
-      console.log('🔍 Test de la connexion email...');
+      logger.info('🔍 Test de la connexion email...');
       this.validateEmailConfig();
       const transporter = this.getTransporter();
       await transporter.verify();
-      console.log('✅ Connexion email réussie');
+      logger.info('✅ Connexion email réussie');
       return { success: true, message: 'Configuration email valide' };
     } catch (error) {
-      console.error('❌ Erreur de connexion email:', error.message);
+      logger.error('❌ Erreur de connexion email:', error.message);
       return { success: false, message: error.message };
     }
   },
@@ -86,7 +88,7 @@ const emailService = {
    */
   async sendNotificationEmail(message) {
     try {
-      console.log(`📧 Envoi notification email pour: ${message.fullName}`);
+      logger.info(`📧 Envoi notification email pour: ${message.fullName}`);
       const transporter = this.getTransporter();
 
       // Gestion des destinataires multiples
@@ -164,10 +166,10 @@ Pour répondre: ${message.email}
       };
 
       const result = await transporter.sendMail(mailOptions);
-      console.log('✅ Email de notification envoyé:', result.messageId);
+    logger.info('✅ Email de notification envoyé:', result.messageId);
       return result;
     } catch (error) {
-      console.error('❌ Erreur envoi notification:', error);
+      logger.error('❌ Erreur envoi notification:', error);
       throw error;
     }
   },
@@ -179,7 +181,7 @@ Pour répondre: ${message.email}
    */
   async sendConfirmationEmail(message) {
     try {
-      console.log(`📧 Envoi confirmation email à: ${message.email}`);
+      logger.info(`📧 Envoi confirmation email à: ${message.email}`);
       const transporter = this.getTransporter();
 
       const mailOptions = {
@@ -264,10 +266,10 @@ contact@webklor.com | www.webklor.com
       };
 
       const result = await transporter.sendMail(mailOptions);
-      console.log('✅ Email de confirmation envoyé:', result.messageId);
+      logger.info('✅ Email de confirmation envoyé:', result.messageId);
       return result;
     } catch (error) {
-      console.error('❌ Erreur envoi confirmation:', error);
+      logger.error('❌ Erreur envoi confirmation:', error);
       throw error;
     }
   },
@@ -285,12 +287,12 @@ contact@webklor.com | www.webklor.com
     };
 
     try {
-      console.log('🧪 Envoi d\'un email de test...');
+      logger.info('🧪 Envoi d\'un email de test...');
       await this.sendNotificationEmail(testMessage);
-      console.log('✅ Email de test envoyé avec succès');
+      logger.info('✅ Email de test envoyé avec succès');
       return { success: true, message: 'Email de test envoyé avec succès' };
     } catch (error) {
-      console.error('❌ Erreur lors du test:', error);
+      logger.error('❌ Erreur lors du test:', error);
       return { success: false, message: error.message };
     }
   },
@@ -303,7 +305,7 @@ contact@webklor.com | www.webklor.com
       try {
         return await emailFunction();
       } catch (error) {
-        console.log(`❌ Tentative ${i + 1}/${maxRetries} échouée:`, error.message);
+        logger.info(`❌ Tentative ${i + 1}/${maxRetries} échouée:`, error.message);
         if (i === maxRetries - 1) throw error;
         
         // Attendre avant de réessayer (backoff exponentiel)
@@ -407,7 +409,7 @@ contact@webklor.com | www.webklor.com
    */
   async testEmailConnection() {
     try {
-      console.log('🔍 Test de connexion SMTP...');
+      logger.info('🔍 Test de connexion SMTP...');
       this.validateEmailConfig();
       
       const transporter = this.getTransporter();
@@ -418,7 +420,7 @@ contact@webklor.com | www.webklor.com
       // Tester la connexion
       await transporter.verify();
       
-      console.log('✅ Connexion SMTP réussie');
+      logger.info('✅ Connexion SMTP réussie');
       
       return {
         success: true,
@@ -429,7 +431,7 @@ contact@webklor.com | www.webklor.com
         service: config.email.service || 'Custom SMTP'
       };
     } catch (error) {
-      console.error('❌ Erreur de connexion SMTP:', error.message);
+      logger.error('❌ Erreur de connexion SMTP:', error.message);
       
       return {
         success: false,
@@ -447,7 +449,7 @@ contact@webklor.com | www.webklor.com
    */
   async sendTestEmail(recipient) {
     try {
-      console.log(`📧 Envoi d'email de test à: ${recipient}`);
+      logger.info(`📧 Envoi d'email de test à: ${recipient}`);
       this.validateEmailConfig();
       
       const transporter = this.getTransporter();
@@ -535,7 +537,7 @@ Si vous recevez cet email, votre configuration fonctionne ! 🎯
       };
 
       const result = await transporter.sendMail(mailOptions);
-      console.log('✅ Email de test envoyé avec succès:', result.messageId);
+      logger.info('✅ Email de test envoyé avec succès:', result.messageId);
       
       return {
         success: true,
@@ -545,7 +547,7 @@ Si vous recevez cet email, votre configuration fonctionne ! 🎯
       };
       
     } catch (error) {
-      console.error('❌ Erreur envoi email de test:', error.message);
+      logger.error('❌ Erreur envoi email de test:', error.message);
       
       return {
         success: false,

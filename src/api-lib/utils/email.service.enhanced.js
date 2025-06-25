@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
+const logger = require('./utils/logger');
 
 /**
  * Service d'envoi d'emails avec configuration flexible et gestion d'erreurs améliorée

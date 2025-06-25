@@ -1,7 +1,6 @@
 const Comment = require('../models/comment.model');
 const Post = require('../models/post.model');
 const sendEmail = require('../utils/email.service');
-const logger = require('../utils/logger.js')
 
 /**
  * Contrôleur pour la gestion des commentaires
@@ -39,7 +38,7 @@ const commentController = {
         data: comments
       });
     } catch (error) {
-      logger.error('Erreur lors de la récupération des commentaires:', error);
+      console.error('Erreur lors de la récupération des commentaires:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération des commentaires',
@@ -65,7 +64,7 @@ const commentController = {
         data: comments
       });
     } catch (error) {
-      logger.error('Erreur lors de la récupération des commentaires en attente:', error);
+      console.error('Erreur lors de la récupération des commentaires en attente:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération des commentaires en attente',
@@ -134,7 +133,7 @@ const commentController = {
           `
         });
       } catch (error) {
-        logger.error('Erreur lors de l\'envoi de l\'email de notification:', error);
+        console.error('Erreur lors de l\'envoi de l\'email de notification:', error);
         // Ne pas renvoyer d'erreur au client si l'email échoue
       }
       
@@ -144,7 +143,7 @@ const commentController = {
         data: comment
       });
     } catch (error) {
-      logger.error('Erreur lors de l\'ajout du commentaire:', error);
+      console.error('Erreur lors de l\'ajout du commentaire:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de l\'ajout du commentaire',
@@ -191,7 +190,7 @@ const commentController = {
         data: comment
       });
     } catch (error) {
-      logger.error('Erreur lors de la modération du commentaire:', error);
+      console.error('Erreur lors de la modération du commentaire:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la modération du commentaire',
@@ -226,7 +225,7 @@ const commentController = {
         message: 'Commentaire et ses réponses supprimés avec succès'
       });
     } catch (error) {
-      logger.error('Erreur lors de la suppression du commentaire:', error);
+      console.error('Erreur lors de la suppression du commentaire:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la suppression du commentaire',
@@ -263,7 +262,7 @@ const commentController = {
         data: comments
       });
     } catch (error) {
-      logger.error('Erreur lors de la récupération des commentaires:', error);
+      console.error('Erreur lors de la récupération des commentaires:', error);
       res.status(500).json({
         success: false,
         message: 'Une erreur est survenue lors de la récupération des commentaires',

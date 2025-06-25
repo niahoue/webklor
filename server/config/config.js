@@ -44,10 +44,5 @@ module.exports = {
     expiresIn: process.env.JWT_EXPIRES_IN || '24h'
   },
 
-  // Configuration administrateur par défaut
-  admin: {
-    email: process.env.DEFAULT_ADMIN_EMAIL || 'admin@webklor.com',
-    password: process.env.DEFAULT_ADMIN_PASSWORD || 'Admin@WebKlor2025',
-    initKey: process.env.ADMIN_INIT_KEY || 'webklor_init_secret_key_25052025'
-  }
+ 
 };
