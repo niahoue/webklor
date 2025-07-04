@@ -1,8 +1,7 @@
-const dotenv = require('dotenv');
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path');
 const helmet = require('./middlewares/helmet.middleware');
 const rateLimit = require('./middlewares/rateLimit.middleware');
 const compression = require('./middlewares/compression.middleware');
@@ -22,17 +21,16 @@ const setupRoutes = require('./routes/setup.routes');
 const adminRoutes = require('./routes/admin.routes');
 const testimonialRoutes = require('./routes/testimonial.routes');
 
-
 // Initialisation de l'application Express
 const app = express();
 
 // Configuration des middlewares
+app.use(corsStrict);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(helmet);
 app.use(rateLimit);
 app.use(compression);
-app.use(corsStrict);
 app.use(errorHandler);
 // Configuration des routes
 app.use('/api', messageRoutes);

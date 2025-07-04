@@ -5,14 +5,12 @@ const config = require('../config/config');
 const allowedOrigins = [
   config.frontendUrl,
   'https://webklor.com',
+  'https://www.webklor.com',
   'https://webklor.vercel.app',
   'http://localhost:5174',
 ];
-
 const corsOptions = {
   origin: function (origin, callback) {
-    // Autorise les requêtes sans origin (ex: Postman, requêtes du même domaine)
-    // ou si l'origine est whitelistée
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
