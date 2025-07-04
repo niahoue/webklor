@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const helmet = require('./middlewares/helmet.middleware');
