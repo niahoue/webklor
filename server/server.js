@@ -72,16 +72,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// En production, servir les fichiers statiques du build React
-if (config.nodeEnv === 'production') {
-  const buildPath = path.join(__dirname, '../dist');
-  
-  app.use(express.static(buildPath));
-  
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(buildPath, 'index.html'));
-  });
-}
 
 // Connexion à MongoDB
 mongoose.connect(config.mongoUri)
