@@ -17,19 +17,12 @@ module.exports = {
   
   // Configuration email flexible
   email: {
-    // Service email (gmail, outlook, yahoo, etc.) OU configuration SMTP personnalisée
-    service: process.env.EMAIL_SERVICE,
-    
-    // Configuration SMTP personnalisée (alternative au service)
+
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : undefined,
-    secure: process.env.EMAIL_SECURE === 'true', // true pour port 465, false pour autres
-    
-    // Authentification
+    secure: process.env.EMAIL_SECURE === 'true',
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
-    
-    // Adresses d'envoi et de réception
     from: process.env.EMAIL_FROM || `WebKlor <${process.env.EMAIL_USER}>`,
     to: process.env.EMAIL_TO || process.env.EMAIL_USER,
     

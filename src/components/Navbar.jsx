@@ -12,7 +12,6 @@ const NavbarComponent = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  
   // Effet pour détecter le défilement et changer l'apparence de la navbar
   useEffect(() => {
     const handleScroll = () => {
@@ -21,8 +20,7 @@ const NavbarComponent = () => {
       } else {
         setScrolled(false);
       }
-    };
-    
+    }; 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -203,7 +201,7 @@ const NavbarComponent = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style jsx> {`
         @media (max-width: 991px) {
           .webklor-navbar-menu-desktop {
             display: none !important;

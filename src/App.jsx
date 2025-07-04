@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Suspense, lazy } from 'react';
 import { Spinner } from 'react-bootstrap';
 
+
 // Contextes
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -77,6 +78,7 @@ function App() {
               variants={pageVariants}
             >
               <Suspense fallback={<LoadingSpinner />}>
+            
                 <Routes>
                 {/* Routes publiques */}
                 <Route path="/" element={<Home />} />

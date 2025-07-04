@@ -25,7 +25,6 @@ export default defineConfig(({ command, mode }) => {
   server: {
     port: 5174,
     strictPort: false,    proxy: {
-      // Configuration du proxy pour rediriger les requêtes API vers le serveur backend
       '/api': {
         target: 'http://localhost:5001',
         changeOrigin: true,
