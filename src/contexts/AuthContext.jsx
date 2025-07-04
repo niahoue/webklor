@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-
+import { apiGet, apiPost, apiPut } from '../services/api';
 const AuthContext = createContext();
 
 /**
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
       }
       
       try {
-        const response = await fetch('/api/auth/me', {
+        const response = await apiGet('/api/auth/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
    * @returns {Promise<boolean>} - Succès de la connexion
    */  const login = async (email, password) => {
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await apiPost('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
    */  const logout = async () => {
     try {
       if (token) {
-        await fetch('/api/auth/logout', {
+        await apiPost('/api/auth/logout', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`

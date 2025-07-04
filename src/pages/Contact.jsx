@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import { containerVariants, itemVariants } from '../utils/animations';
 import { SITE_CONFIG } from '../utils/constants';
+import { apiPost } from '../services/api';
 
 /**
  * Page Contact
@@ -67,7 +68,7 @@ const Contact = () => {
     });
     
     try {
-      const response = await fetch('/api/messages', {
+      const response = await apiPost('/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

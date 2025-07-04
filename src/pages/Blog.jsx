@@ -7,6 +7,7 @@ import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import LazyImage from '../components/LazyImage';
 import { containerVariants, itemVariants } from '../utils/animations';
+import { apiGet, apiPost, apiPut } from '../services/api';
 
 /**
  * Page Blog

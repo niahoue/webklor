@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
-import API_BASE_URL from '../utils/apiConfig';
-
+import { apiGet, apiPost, apiPut } from '../services/api';
 /**
  * Formulaire pour ajouter un commentaire
  * @param {Object} props - Propriétés du composant 
@@ -35,7 +34,7 @@ const CommentForm = ({ postId, parentCommentId = null, onCommentSubmitted }) => 
     setError(null);
     setSuccess(false);
       try {
-      const response = await fetch(`${API_BASE_URL}/api/blog/posts/${postId}/comments`, {
+      const response = await apiPost(`/api/blog/posts/${postId}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

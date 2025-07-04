@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Container, Alert, Button, Card, Form } from 'react-bootstrap';
 import SEO from '../components/SEO';
-
+import { apiGet, apiPost, apiPut } from '../services/api';
 /**
  * Page de désabonnement de la newsletter
  */
@@ -30,7 +30,7 @@ const Unsubscribe = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/newsletters/unsubscribe?email=${encodeURIComponent(userEmail)}`, {
+      const response = await apiGet(`/api/newsletters/unsubscribe?email=${encodeURIComponent(userEmail)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

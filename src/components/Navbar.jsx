@@ -201,7 +201,7 @@ const NavbarComponent = () => {
         </div>
       </div>
 
-      <style jsx> {`
+      <style jsx="true">{`
         @media (max-width: 991px) {
           .webklor-navbar-menu-desktop {
             display: none !important;

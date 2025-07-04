@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Spinner, Alert } from 'react-bootstrap';
 import CommentForm from './CommentForm';
-import API_BASE_URL from '../utils/apiConfig';
-
+import { apiGet, apiPost, apiPut } from '../services/api';
 /**
  * Composant affichant un commentaire individuel avec ses réponses
  * @param {Object} props - Propriétés du composant
@@ -83,7 +82,7 @@ const Comments = ({ postId }) => {
   const fetchComments = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/blog/posts/${postId}/comments`);
+      const response = await apiGet(`/api/blog/posts/${postId}/comments`);
       
       if (!response.ok) {
         const data = await response.json();

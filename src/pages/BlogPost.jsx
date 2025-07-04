@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Comments from '../components/Comments';
 import LazyImage from '../components/LazyImage';
+import { apiGet, apiPost, apiPut } from '../services/api';
 
 /**
  * Composant d'affichage d'un article de blog
@@ -21,7 +22,7 @@ const BlogPost = () => {
   useEffect(() => {    const fetchPost = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/blog/posts/${slug}`);
+        const response = await apiGet(`/api/blog/posts/${slug}`);
         const data = await response.json();
         
         if (!response.ok) {
@@ -46,7 +47,7 @@ const BlogPost = () => {
     // Récupérer les articles liés par catégorie
   const fetchRelatedPosts = async (category) => {
     try {
-      const response = await fetch(`/api/blog/posts?category=${category}&limit=3`);
+      const response = await apiGet(`/api/blog/posts?category=${category}&limit=3`);
       const data = await response.json();
       
       if (response.ok) {

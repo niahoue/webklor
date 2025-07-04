@@ -5,7 +5,6 @@ import SEO from '../components/SEO';
 import ProtectedRoute from '../components/ProtectedRoute';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet, apiPost, apiPut, apiDelete } from '../services/api';
-import API_BASE_URL from '../utils/apiConfig';
 
 /**
  * Page d'administration des newsletters
@@ -41,7 +40,7 @@ const AdminNewsletter = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await apiGet(`${API_BASE_URL}/api/newsletters`, { headers: getAuthHeader() });
+      const data = await apiGet(`/api/newsletters`, { headers: getAuthHeader() });
       setNewsletters(data.data || []);
     } catch (err) {
       if (err.message && err.message.toLowerCase().includes('401')) {
@@ -59,7 +58,7 @@ const AdminNewsletter = () => {
    */
   const fetchSubscribers = async () => {
     try {
-      const data = await apiGet(`${API_BASE_URL}/api/newsletters/subscribers/list`, { headers: getAuthHeader() });
+      const data = await apiGet(`/api/newsletters/subscribers/list`, { headers: getAuthHeader() });
       setSubscribers(data.data || []);
     } catch (err) {
       if (err.message && err.message.toLowerCase().includes('401')) {
@@ -117,9 +116,9 @@ const AdminNewsletter = () => {
     e.preventDefault();
     
     try {
-     let url = `${API_BASE_URL}/api/newsletters`;
+     let url = `/api/newsletters`;
       if (modalType === 'edit' && selectedNewsletter) {
-        url = `${API_BASE_URL}/api/newsletters/${selectedNewsletter._id}`;
+        url = `/api/newsletters/${selectedNewsletter._id}`;
 }
 
       if (method === 'POST') {
@@ -149,7 +148,7 @@ const AdminNewsletter = () => {
     }
 
     try {
-      await apiDelete(`${API_BASE_URL}/api/newsletters/${id}`, { headers: getAuthHeader() });
+      await apiDelete(`/api/newsletters/${id}`, { headers: getAuthHeader() });
       await fetchNewsletters();
     } catch (err) {
       if (err.message && err.message.toLowerCase().includes('401')) {
@@ -169,7 +168,7 @@ const AdminNewsletter = () => {
     }
 
     try {
-      await apiPost(`${API_BASE_URL}/api/newsletters/${id}/send`, {}, { headers: getAuthHeader() });
+      await apiPost(`/api/newsletters/${id}/send`, {}, { headers: getAuthHeader() });
       await fetchNewsletters();
     } catch (err) {
       if (err.message && err.message.toLowerCase().includes('401')) {

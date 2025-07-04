@@ -6,7 +6,6 @@ import 'react-quill/dist/quill.snow.css';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet, apiPost, apiPut } from '../services/api';
 import LazyImage from './LazyImage';
-import API_BASE_URL from '../utils/apiConfig';
 
 /**
  * Composant d'édition d'articles de blog
@@ -65,7 +64,7 @@ const BlogEditor = () => {
     const fetchPost = async () => {
     setLoading(true);
     try {
-      const data = await apiGet(`${API_BASE_URL}/api/admin/blog/posts/${id}`, { headers: getAuthHeader() });
+      const data = await apiGet(`/api/admin/blog/posts/${id}`, { headers: getAuthHeader() });
       const post = data.data;
       
       setFormData({
@@ -154,8 +153,8 @@ const BlogEditor = () => {
       };
         // Déterminer l'URL et la méthode
       const url = isNewPost 
-        ? `${API_BASE_URL}/api/admin/blog/posts` 
-        : `${API_BASE_URL}/api/admin/blog/posts/${id}`;
+        ? `/api/admin/blog/posts` 
+        : `/api/admin/blog/posts/${id}`;
         
       // Envoyer la requête
       if (isNewPost) {

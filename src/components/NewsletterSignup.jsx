@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
+import { apiGet, apiPost, apiPut } from '../services/api';
 /**
  * Composant de formulaire d'abonnement à la newsletter
  */
@@ -29,7 +29,7 @@ const NewsletterSignup = ({ variant = 'default' }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/newsletters/subscribe', {
+      const response = await apiPost('/api/newsletters/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
