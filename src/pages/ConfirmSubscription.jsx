@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Alert, Button, Card } from 'react-bootstrap';
 import SEO from '../components/SEO';
+import API_BASE_URL from '../utils/apiConfig'
 
 /**
  * Page de confirmation d'abonnement à la newsletter
@@ -16,7 +17,7 @@ const ConfirmSubscription = () => {
     const confirmSubscription = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/newsletters/confirm/${token}`, {
+        const response = await fetch(`${API_BASE_URL}/api/newsletters/confirm/${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

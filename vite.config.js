@@ -2,13 +2,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ command, mode }) => {
-  // Définir NODE_ENV automatiquement
+  
   const isProduction = mode === 'production';
   
   return {
     // Définir les variables d'environnement
     define: {
-      'process.env.NODE_ENV': JSON.stringify(mode),
+      'process.env.MODE': JSON.stringify(mode),
       __DEV__: !isProduction
     },
     

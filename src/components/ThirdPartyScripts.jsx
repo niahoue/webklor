@@ -58,7 +58,7 @@ const ThirdPartyScripts = () => {
       
       // Charger Google Analytics après un délai pour ne pas impacter le rendu initial
       setTimeout(() => {
-        if (process.env.NODE_ENV === 'production') {
+        if (process.env.MODE === 'production') {
           loadGoogleAnalytics();
         }
       }, 2000);

@@ -13,7 +13,7 @@ export const measureWebVitals = () => {
     console.log(`📊 [WebKlor Perf] ${metric.name}:`, metric);
     
     // En production, envoyer à Google Analytics
-    if (window.gtag && process.env.NODE_ENV === 'production') {
+    if (window.gtag && process.env.MODE === 'production') {
       window.gtag('event', metric.name, {
         event_category: 'Web Vitals',
         event_label: metric.id,

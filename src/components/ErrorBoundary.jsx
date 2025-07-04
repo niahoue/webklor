@@ -58,7 +58,7 @@ class ErrorBoundary extends Component {
             </div>
           </Alert>
           
-          {process.env.NODE_ENV === 'development' && (
+          {process.env.MODE === 'development' && (
             <details className="mt-4">
               <summary>Détails de l'erreur (développement)</summary>
               <pre className="mt-2 p-3 bg-light border rounded">
