@@ -20,6 +20,12 @@ const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('Tous');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [newsletterResult, setNewsletterResult] = useState({
+    success: null,
+    message: ''
+  });
 
   // Configuration SEO de la page
   const seoData = {
@@ -83,7 +89,33 @@ const Blog = () => {
 
   // Catégories de blog
   const categories = ["Tous", "Développement Web", "SEO", "Marketing Digital", "Design", "Technologie", "Astuces", "Actualités"];
+  // Gestion de la soumission de la newsletter
+  const handleNewsletterChange = (e) => {
+    setNewsletterEmail(e.target.value);
+  };
 
+  const handleNewsletterSubmit = async () => {
+    if (!newsletterEmail) {
+      setNewsletterResult({ success: false, message: "Veuillez entrer votre adresse email." });
+      return;
+    }
+
+    setIsSubscribing(true);
+    setNewsletterResult({ success: null, message: '' }); // Réinitialiser le résultat
+
+    try {
+      // Utilisez apiPost si disponible, sinon utilisez fetch directement
+      const data = await apiPost('/api/newsletters/subscribe', { email: newsletterEmail });
+      
+      setNewsletterResult({ success: true, message: data.message || "Abonnement réussi ! Veuillez vérifier votre email pour confirmer." });
+      setNewsletterEmail(''); // Réinitialiser le champ email
+    } catch (err) {
+      console.error("Erreur d'abonnement newsletter:", err);
+      setNewsletterResult({ success: false, message: err.message || ERROR_MESSAGES.GENERIC_ERROR });
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
   return (
     <main>
       <SEO {...seoData} />
@@ -213,7 +245,8 @@ const Blog = () => {
         </Container>
       </section>
 
-      {/* Section Newsletter */}
+     
+       {/* Section Newsletter */}
       <section className="newsletter bg-light py-5">
         <Container>
           <Row className="justify-content-center">
@@ -221,9 +254,36 @@ const Blog = () => {
               <h2 className="fw-bold mb-4">Restez informé</h2>
               <p className="lead mb-4">Abonnez-vous à notre newsletter pour recevoir nos derniers articles et actualités directement dans votre boîte mail.</p>
               <div className="input-group mb-3 newsletter-form">
-                <input type="email" className="form-control form-control-lg" placeholder="Votre adresse email" aria-label="Adresse email" />
-                <button className="btn btn-primary" type="button">S'abonner</button>
+                <input
+                  type="email"
+                  className="form-control form-control-lg"
+                  placeholder="Votre adresse email"
+                  aria-label="Adresse email"
+                  value={newsletterEmail}
+                  onChange={handleNewsletterChange}
+                  disabled={isSubscribing}
+                />
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  onClick={handleNewsletterSubmit}
+                  disabled={isSubscribing}
+                >
+                  {isSubscribing ? (
+                    <>
+                      <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+                      Abonnement...
+                    </>
+                  ) : (
+                    "S'abonner"
+                  )}
+                </button>
               </div>
+              {newsletterResult.message && (
+                <Alert variant={newsletterResult.success ? "success" : "danger"} className="mt-3">
+                  {newsletterResult.message}
+                </Alert>
+              )}
               <small className="text-muted">Nous respectons votre vie privée. Désabonnez-vous à tout moment.</small>
             </Col>
           </Row>

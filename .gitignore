@@ -80,9 +80,9 @@ web_modules/
 !.env.example
 
 # Fichiers de configuration sensibles du serveur
-server/.env
-server/.env.local
-server/.env.production
+backend/.env
+backend/.env.local
+backend/.env.production
 api/.env
 api/.env.local
 

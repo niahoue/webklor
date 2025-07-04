@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -20,33 +21,13 @@ const commentRoutes = require('./routes/comment.routes');
 const newsletterRoutes = require('./routes/newsletter.routes');
 const setupRoutes = require('./routes/setup.routes');
 const adminRoutes = require('./routes/admin.routes');
+const testimonialRoutes = require('./routes/testimonial.routes');
 
-const allowedOrigins = [
-  'https://webklor.com',
-  'https://webklor.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:5000',
-  process.env.FRONTEND_URL
-].filter(Boolean);
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS bloqué pour l'origine : ${origin}`));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
 
 // Initialisation de l'application Express
 const app = express();
 
 // Configuration des middlewares
-app.use(cors( corsOptions));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(helmet);
@@ -62,7 +43,7 @@ app.use('/api', commentRoutes);
 app.use('/api/newsletters', newsletterRoutes);
 app.use('/api', setupRoutes);
 app.use('/api/admin', adminRoutes);
-
+app.use('/api', testimonialRoutes);
 // Route de test API
 app.get('/api/health', (req, res) => {
   res.status(200).json({

@@ -14,7 +14,7 @@ const emailService = {
       // Configuration pour SMTP personnalisé
       if (config.email.host) {
         logger.info('🔧 Configuration SMTP personnalisée');
-        return nodemailer.createTransporter({
+        return nodemailer.createTransport({
           host: config.email.host,
           port: config.email.port || 587,
           secure: config.email.secure || false, // true pour port 465, false pour autres
@@ -30,7 +30,7 @@ const emailService = {
 
       // Configuration pour services tiers (Gmail, Outlook, etc.)
       logger.info(`🔧 Configuration service: ${config.email.service}`);
-      return nodemailer.createTransporter({
+      return nodemailer.createTransport({
         service: config.email.service,
         auth: {
           user: config.email.user,

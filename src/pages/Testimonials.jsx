@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Container, Row, Col, Card, Button, Badge, Form, Modal, Carousel, Dropdown, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge, Form, Modal, Carousel, Dropdown, Pagination,Spinner,Alert } from 'react-bootstrap';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import PageHeader from '../components/PageHeader';
 import LazyImage from '../components/LazyImage';
 import { containerVariants, itemVariants } from '../utils/animations';
 import { TESTIMONIALS, COMPANY_STATS, TESTIMONIAL_STATS } from '../utils/constants';
+import { apiPost } from '../services/api'; 
 import '../styles/testimonials.css';
 
 /**
@@ -18,7 +19,7 @@ const Testimonials = () => {
   const navigate = useNavigate();
   
   // États pour les filtres et interactions
-  const [selectedCategory, setSelectedCategory] = useState('Tous');
+   const [selectedCategory, setSelectedCategory] = useState('Tous');
   const [showModal, setShowModal] = useState(false);
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -26,15 +27,18 @@ const Testimonials = () => {
   const [sortBy, setSortBy] = useState('recent'); // 'recent', 'rating', 'alphabetical'
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(4); // Nombre de témoignages par page (2x2)
+  
+  // Nouveaux états pour la soumission de témoignage
   const [isLoading, setIsLoading] = useState(false);
+  const [submitResult, setSubmitResult] = useState({ success: null, message: '' });
   const [submitForm, setSubmitForm] = useState({
     name: '',
     company: '',
     email: '',
     testimonial: '',
-    rating: 0,
     acceptTerms: false
   });
+
   
   // Données des catégories pour filtrage
   const categories = ['Tous', 'E-commerce', 'Immobilier', 'Restaurant', 'Juridique', 'Éducation', 'Santé', 'Technologie', 'Logistique'];
@@ -131,22 +135,6 @@ const Testimonials = () => {
     setShowModal(true);
   };
   
-  // Fonction pour gérer la soumission du formulaire
-  const handleSubmitTestimonial = (e) => {
-    e.preventDefault();
-    // Ici on pourrait intégrer avec une API
-    alert('Merci pour votre témoignage ! Il sera examiné et publié sous peu.');
-    setShowSubmitModal(false);
-    setSubmitForm({
-      name: '',
-      company: '',
-      email: '',
-      testimonial: '',
-      rating: 0,
-      acceptTerms: false
-    });
-    setSubmitRating(0);
-  };
   
   // Fonction pour gérer les changements du formulaire
   const handleFormChange = (field, value) => {
@@ -156,6 +144,54 @@ const Testimonials = () => {
     }));
   };
   
+  const resetSubmitForm = () => {
+    setSubmitForm({
+      name: '',
+      company: '',
+      email: '',
+      testimonial: '',
+      acceptTerms: false
+    });
+    setSubmitRating(0);
+    setSubmitResult({ success: null, message: '' });
+    setIsLoading(false);
+  };
+
+  const handleSubmitTestimonial = async () => {
+    if (!submitForm.name || !submitForm.email || !submitForm.testimonial || submitRating === 0 || !submitForm.acceptTerms) {
+      setSubmitResult({ success: false, message: "Veuillez remplir tous les champs obligatoires et accepter les termes." });
+      return;
+    }
+
+    setIsLoading(true);
+    setSubmitResult({ success: null, message: '' });
+
+    try {
+      // Création du payload à envoyer
+      const payload = {
+        author: submitForm.name,
+        company: submitForm.company,
+        email: submitForm.email,
+        content: submitForm.testimonial,
+        rating: submitRating,
+        // Si vous avez un champ pour l'approbation, incluez-le ici
+        // isApproved: false // Le témoignage sera en attente d'approbation par défaut
+      };
+
+      // Appel à l'API via apiPost
+      const data = await apiPost('/api/testimonials', payload); // Assurez-vous que l'endpoint correspond à votre backend
+      
+      setSubmitResult({ success: true, message: data.message || "Votre témoignage a été envoyé avec succès et est en attente de modération." });
+      resetSubmitForm(); // Réinitialiser le formulaire après succès
+      setShowSubmitModal(false); // Fermer le modal
+    } catch (err) {
+      console.error("Erreur lors de l'envoi du témoignage:", err);
+      setSubmitResult({ success: false, message: err.message || ERROR_MESSAGES.GENERIC_ERROR });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Fonction pour gérer la notation
   const handleRatingClick = (rating) => {
     setSubmitRating(rating);
@@ -404,7 +440,122 @@ const Testimonials = () => {
                 </Row>
               )}
             </motion.div>
+            <section className="py-5 text-center">
+        <Container>
+          <h2 className="fw-bold mb-4">Partagez votre expérience</h2>
+          <p className="lead mb-4">Votre avis compte ! Aidez-nous à améliorer nos services en partageant votre témoignage.</p>
+          <Button variant="primary" onClick={() => {setShowSubmitModal(true); resetSubmitForm();}}>
+            <i className="bi bi-chat-dots me-2"></i>
+            Écrire un témoignage
+          </Button>
+        </Container>
+      </section>
+
+      {/* Modal pour la soumission de témoignage */}
+      <Modal show={showSubmitModal} onHide={() => setShowSubmitModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Soumettre votre témoignage</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {submitResult.message && (
+            <Alert variant={submitResult.success ? "success" : "danger"}>
+              {submitResult.message}
+            </Alert>
+          )}
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Votre nom complet</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Ex: Jean Dupont" 
+                value={submitForm.name}
+                onChange={(e) => handleFormChange('name', e.target.value)}
+                required 
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Votre entreprise (optionnel)</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Ex: Ma Société S.A." 
+                value={submitForm.company}
+                onChange={(e) => handleFormChange('company', e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Votre email</Form.Label>
+              <Form.Control 
+                type="email" 
+                placeholder="Ex: votre@email.com" 
+                value={submitForm.email}
+                onChange={(e) => handleFormChange('email', e.target.value)}
+                required 
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Votre note</Form.Label>
+              <div>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className="star"
+                    style={{ cursor: 'pointer', fontSize: '1.5rem', color: star <= submitRating ? 'gold' : 'grey' }}
+                    onClick={() => setSubmitRating(star)}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Votre témoignage</Form.Label>
+              <Form.Control 
+                as="textarea" 
+                rows={4} 
+                placeholder="Partagez votre expérience avec WebKlor..." 
+                value={submitForm.testimonial}
+                onChange={(e) => handleFormChange('testimonial', e.target.value)}
+                required 
+              />
+              <Form.Text className="text-muted">
+                {submitForm.testimonial.length}/500 caractères
+              </Form.Text>
+            </Form.Group>
             
+            <Form.Group className="mb-3">
+              <Form.Check 
+                type="checkbox" 
+                label="J'accepte que mon témoignage soit publié sur le site WebKlor" 
+                checked={submitForm.acceptTerms}
+                onChange={(e) => handleFormChange('acceptTerms', e.target.checked)}
+                required 
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowSubmitModal(false)} disabled={isLoading}>
+            Annuler
+          </Button>
+          <Button 
+            variant="primary" 
+            onClick={handleSubmitTestimonial}
+            disabled={isLoading || !submitForm.name || !submitForm.email || !submitForm.testimonial || submitRating === 0 || !submitForm.acceptTerms}
+          >
+            {isLoading ? (
+              <>
+                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+                Envoi...
+              </>
+            ) : (
+              <>
+                <i className="bi bi-send me-2"></i>
+                Envoyer le témoignage
+              </>
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
             {/* Pagination */}
             {totalPages > 1 && (
               <motion.div variants={itemVariants} className="d-flex justify-content-center mt-5">

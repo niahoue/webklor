@@ -3,9 +3,12 @@ const cors = require('cors');
 const config = require('../config/config');
 
 const allowedOrigins = [
-  config.frontendUrl,
-  // Ajoutez d'autres domaines autorisés si besoin
-];
+     config.frontendUrl,
+    'https://webklor.com',
+    'https://webklor.vercel.app',
+    'http://localhost:5174',
+    
+  ]
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -17,6 +20,8 @@ const corsOptions = {
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 module.exports = cors(corsOptions);
