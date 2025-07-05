@@ -25,7 +25,7 @@ router.use('/admin/testimonials', authMiddleware.protect);
 // GET /api/admin/testimonials - Récupérer tous les témoignages (y compris non approuvés)
 router.get('/admin/testimonials', authMiddleware.restrictTo('admin', 'editor'), testimonialController.getAllTestimonialsAdmin);
 
-// PUT /api/admin/testimonials/:id/status - Mettre à jour le statut d'approbation d'un témoignage
+// PUT /admin/testimonials/:id/status - Mettre à jour le statut d'approbation d'un témoignage
 router.put('/admin/testimonials/:id/status', authMiddleware.restrictTo('admin', 'editor'), testimonialController.updateTestimonialStatus);
 
 // DELETE /api/admin/testimonials/:id - Supprimer un témoignage

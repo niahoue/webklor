@@ -13,9 +13,19 @@ const messageController = {
   async createMessage(req, res) {
     try {
       const { fullName, email, phone, subject, message, consentGiven } = req.body;
+     // Nettoyage des données
+    const cleanData = {
+      fullName: fullName?.trim(),
+      email: email?.trim(),
+      phone: phone?.trim(),
+      subject: subject?.trim(),
+      message: message?.trim(),
+      consentGiven
+    };
       
       // Vérification des champs obligatoires
       if (!fullName || !email || !subject || !message) {
+      
         return res.status(400).json({ 
           success: false,
           message: 'Veuillez fournir tous les champs obligatoires' 

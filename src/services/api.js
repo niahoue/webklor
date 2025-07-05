@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES } from '../utils/constants';
-import API_BASE_URL from '../utils/apiConfig'; // <-- Ajouté : Importation de l'URL de base de l'API
+import API_BASE_URL from '../utils/apiConfig'; 
 
 /**
  * Gestion centralisée des erreurs API
@@ -37,13 +37,11 @@ const defaultHeaders = {
  * @returns {Promise<Object>} La réponse JSON de l'API
  * @throws {Error} En cas d'erreur API ou de réseau
  */
-const apiRequest = async (url, options = {}) => {
+export const apiRequest = async (url, options = {}) => {
  
   const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`; 
-
   try {
     const response = await fetch(fullUrl, { 
-      headers: defaultHeaders,
       ...options,
       headers: {
         ...defaultHeaders,
@@ -54,6 +52,7 @@ const apiRequest = async (url, options = {}) => {
     if (!response.ok) {
       // Si la réponse n'est pas OK (status 2xx), gérer l'erreur
       handleApiError(response, `Erreur HTTP ${response.status}`);
+    
     }
 
     // Gestion spéciale pour les réponses vides (ex: 204 No Content pour DELETE)

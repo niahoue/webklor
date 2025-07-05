@@ -22,9 +22,8 @@ const BlogPost = () => {
   useEffect(() => {    const fetchPost = async () => {
       setLoading(true);
       try {
-        const response = await apiGet(`/api/blog/posts/${slug}`);
-        const data = await response.json();
-        
+        const data = await apiGet(`/api/blog/posts/${slug}`);
+       
         if (!response.ok) {
           throw new Error(data.message || 'Erreur lors de la récupération de l\'article');
         }

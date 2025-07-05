@@ -6,7 +6,7 @@ import SEO from '../components/SEO';
 import PageHeader from '../components/PageHeader';
 import { containerVariants, itemVariants } from '../utils/animations';
 import { SITE_CONFIG } from '../utils/constants';
-import { apiPost } from '../services/api';
+import { apiRequest } from '../services/api'; // Corrigé : utiliser apiRequest au lieu de apiPost
 
 /**
  * Page Contact
@@ -43,8 +43,18 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Nettoyage des données
+    const cleanData = {
+      fullName: formData.fullName?.trim(),
+      email: formData.email?.trim(),
+      phone: formData.phone?.trim(),
+      subject: formData.subject?.trim(),
+      message: formData.message?.trim(),
+      consentGiven: Boolean(formData.consentGiven)
+    };
+
     // Validation basique du formulaire
-    if (!formData.fullName || !formData.email || !formData.subject || !formData.message) {
+    if (!cleanData.fullName || !cleanData.email || !cleanData.subject || !cleanData.message) {
       setSubmitResult({
         success: false,
         message: 'Veuillez remplir tous les champs obligatoires.'
@@ -52,7 +62,7 @@ const Contact = () => {
       return;
     }
     
-    if (!formData.consentGiven) {
+    if (!cleanData.consentGiven) {
       setSubmitResult({
         success: false,
         message: 'Vous devez accepter la politique de confidentialité.'
@@ -68,17 +78,16 @@ const Contact = () => {
     });
     
     try {
-      const response = await apiPost('/api/messages', {
+      const response = await apiRequest('/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(cleanData)
       });
       
-      const data = await response.json();
-      
-      if (response.ok) {
+      // apiRequest retourne déjà les données parsées
+      if (response.success) {
         // Réinitialisation du formulaire en cas de succès
         setFormData({
           fullName: '',
@@ -91,13 +100,13 @@ const Contact = () => {
         
         setSubmitResult({
           success: true,
-          message: data.message || 'Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.'
+          message: response.message || 'Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.'
         });
       } else {
         // Affichage de l'erreur
         setSubmitResult({
           success: false,
-          message: data.message || 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer.'
+          message: response.message || 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer.'
         });
       }
     } catch (error) {
@@ -119,6 +128,7 @@ const Contact = () => {
     canonicalUrl: "https://www.webklor.com/contact",
     schemaType: "contact"
   };
+  
   // Configuration des animations au défilement
   const [formRef, formInView] = useInView({
     triggerOnce: true,
@@ -170,7 +180,7 @@ const Contact = () => {
                     <Col md={6} className="mb-3">
                       <motion.div variants={itemVariants}>
                         <Form.Group controlId="formName">
-                          <Form.Label>Nom complet</Form.Label>
+                          <Form.Label>Nom complet *</Form.Label>
                           <Form.Control 
                             type="text" 
                             placeholder="Votre nom" 
@@ -178,6 +188,7 @@ const Contact = () => {
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
+                            required
                           />
                         </Form.Group>
                       </motion.div>
@@ -185,7 +196,7 @@ const Contact = () => {
                     <Col md={6} className="mb-3">
                       <motion.div variants={itemVariants}>
                         <Form.Group controlId="formEmail">
-                          <Form.Label>Adresse email</Form.Label>
+                          <Form.Label>Adresse email *</Form.Label>
                           <Form.Control 
                             type="email" 
                             placeholder="Votre email" 
@@ -193,6 +204,7 @@ const Contact = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
+                            required
                           />
                         </Form.Group>
                       </motion.div>
@@ -218,19 +230,20 @@ const Contact = () => {
                     <Col md={6} className="mb-3">
                       <motion.div variants={itemVariants}>
                         <Form.Group controlId="formSubject">
-                          <Form.Label>Sujet</Form.Label>
+                          <Form.Label>Sujet *</Form.Label>
                           <Form.Select 
                             className="py-2" 
                             name="subject"
                             value={formData.subject}
                             onChange={handleChange}
+                            required
                           >
-                            <option>Choisir un sujet</option>
-                            <option>Création de site web</option>
-                            <option>SEO & Marketing Digital</option>
-                            <option>Identité visuelle</option>
-                            <option>Maintenance web</option>
-                            <option>Autre</option>
+                            <option value="">Choisir un sujet</option>
+                            <option value="Création de site web">Création de site web</option>
+                            <option value="SEO & Marketing Digital">SEO & Marketing Digital</option>
+                            <option value="Identité visuelle">Identité visuelle</option>
+                            <option value="Maintenance web">Maintenance web</option>
+                            <option value="Autre">Autre</option>
                           </Form.Select>
                         </Form.Group>
                       </motion.div>
@@ -239,7 +252,7 @@ const Contact = () => {
 
                   <motion.div variants={itemVariants}>
                     <Form.Group className="mb-4" controlId="formMessage">
-                      <Form.Label>Message</Form.Label>
+                      <Form.Label>Message *</Form.Label>
                       <Form.Control 
                         as="textarea" 
                         rows={5} 
@@ -247,6 +260,7 @@ const Contact = () => {
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
+                        required
                       />
                     </Form.Group>
                   </motion.div>
@@ -255,10 +269,11 @@ const Contact = () => {
                     <Form.Group className="mb-4" controlId="formConsent">
                       <Form.Check 
                         type="checkbox" 
-                        label="J'accepte que mes données soient traitées conformément à la politique de confidentialité." 
+                        label="J'accepte que mes données soient traitées conformément à la politique de confidentialité. *" 
                         name="consentGiven"
                         checked={formData.consentGiven}
                         onChange={handleChange}
+                        required
                       />
                     </Form.Group>
                   </motion.div>

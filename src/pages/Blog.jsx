@@ -59,8 +59,7 @@ const Blog = () => {
         url += `&category=${encodeURIComponent(selectedCategory)}`;
       }
       
-      const response = await fetch(url);
-      const data = await response.json();
+      const data = await apiGet(url);
       
       if (!response.ok) {
         throw new Error(data.message || 'Erreur lors de la récupération des articles');
