@@ -48,32 +48,30 @@ const Blog = () => {
     fetchPosts();
   }, [currentPage, selectedCategory]);
 
-  const fetchPosts = async () => {
-    setLoading(true);
-    try {
-      // Construire l'URL avec les paramètres
-      let url = `/api/blog/posts?page=${currentPage}&limit=6`;
-      
-      // Ajouter le filtre par catégorie si spécifié (sauf pour "Tous")
-      if (selectedCategory !== 'Tous') {
-        url += `&category=${encodeURIComponent(selectedCategory)}`;
-      }
-      
-      const data = await apiGet(url);
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Erreur lors de la récupération des articles');
-      }
-      
-      setPosts(data.data);
-      setTotalPages(data.totalPages);
-    } catch (error) {
-      console.error('Erreur:', error);
-      setError('Impossible de charger les articles. ' + error.message);
-    } finally {
-      setLoading(false);
+ const fetchPosts = async () => {
+  setLoading(true);
+  try {
+    // Construire l'URL avec les paramètres
+    let url = `/api/blog/posts?page=${currentPage}&limit=6`;
+    
+    // Ajouter le filtre par catégorie si spécifié (sauf pour "Tous")
+    if (selectedCategory !== 'Tous') {
+      url += `&category=${encodeURIComponent(selectedCategory)}`;
     }
-  };
+    
+    // apiGet gère déjà les erreurs et retourne directement les données JSON
+    const data = await apiGet(url);
+    
+    // Pas besoin de vérifier response.ok car apiGet lance une erreur si ce n'est pas OK
+    setPosts(data.data);
+    setTotalPages(data.totalPages);
+  } catch (error) {
+    console.error('Erreur:', error);
+    setError('Impossible de charger les articles. ' + error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Formater la date
   const formatDate = (dateString) => {

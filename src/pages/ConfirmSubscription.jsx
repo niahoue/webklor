@@ -15,33 +15,27 @@ const ConfirmSubscription = () => {
 
   useEffect(() => {
     const confirmSubscription = async () => {
-      try {
-        setLoading(true);
-        const response = await apiGet(`/api/newsletters/confirm/${token}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Une erreur est survenue lors de la confirmation.');
-        }
-
-        setSuccess(true);
-      } catch (err) {
-        console.error('Erreur de confirmation:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (token) {
-      confirmSubscription();
+        try {
+      setLoading(true);
+      
+      // apiGet est déjà configuré pour GET par défaut
+      // et retourne directement les données JSON
+      const data = await apiGet(`/api/newsletters/confirm/${token}`);
+      
+      // Pas besoin de vérifier response.ok car apiGet lance une erreur si ce n'est pas OK
+      setSuccess(true);
+      
+    } catch (err) {
+      console.error('Erreur de confirmation:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  if (token) {
+    confirmSubscription();
+  }
   }, [token]);
 
   return (

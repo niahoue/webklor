@@ -19,45 +19,45 @@ const BlogPost = () => {
   const [relatedPosts, setRelatedPosts] = useState([]);
   
   // Charger l'article
-  useEffect(() => {    const fetchPost = async () => {
-      setLoading(true);
-      try {
-        const data = await apiGet(`/api/blog/posts/${slug}`);
-       
-        if (!response.ok) {
-          throw new Error(data.message || 'Erreur lors de la récupération de l\'article');
-        }
-        
-        setPost(data.data);
-        
-        // Récupérer les articles liés
-        fetchRelatedPosts(data.data.category);
-        
-      } catch (error) {
-        console.error('Erreur:', error);
-        setError('Impossible de charger l\'article. ' + error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchPost();
-  }, [slug]);
-    // Récupérer les articles liés par catégorie
-  const fetchRelatedPosts = async (category) => {
+  useEffect(() => { 
+       const fetchPost = async () => {
+    setLoading(true);
     try {
-      const response = await apiGet(`/api/blog/posts?category=${category}&limit=3`);
-      const data = await response.json();
+      // apiGet gère déjà les erreurs et retourne directement les données JSON
+      const data = await apiGet(`/api/blog/posts/${slug}`);
       
-      if (response.ok) {
-        // Filtrer l'article actuel des résultats liés
-        const filtered = data.data.filter(p => p.slug !== slug);
-        setRelatedPosts(filtered.slice(0, 3));
-      }
+      // Pas besoin de vérifier response.ok car apiGet lance une erreur si ce n'est pas OK
+      setPost(data.data);
+      
+      // Récupérer les articles liés
+      fetchRelatedPosts(data.data.category);
+      
     } catch (error) {
-      console.error('Erreur lors de la récupération des articles liés:', error);
+      console.error('Erreur:', error);
+      setError('Impossible de charger l\'article. ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
+  
+  fetchPost();
+  }, [slug]);
+    // Récupérer les articles liés par catégorie
+ const fetchRelatedPosts = async (category) => {
+  try {
+    // apiGet retourne directement les données JSON
+    const data = await apiGet(`/api/blog/posts?category=${category}&limit=3`);
+    
+    // Filtrer l'article actuel des résultats liés
+    const filtered = data.data.filter(p => p.slug !== slug);
+    setRelatedPosts(filtered.slice(0, 3));
+    
+  } catch (error) {
+    console.error('Erreur lors de la récupération des articles liés:', error);
+    // Optionnel: vous pouvez choisir de ne pas afficher d'erreur pour les articles liés
+    // car c'est une fonctionnalité secondaire
+  }
+}
   
   // Configuration SEO de la page
   const seoData = post ? {
