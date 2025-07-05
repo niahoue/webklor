@@ -117,8 +117,10 @@ const AdminNewsletter = () => {
     
     try {
      let url = `/api/newsletters`;
+     let httpMethod = 'POST';
       if (modalType === 'edit' && selectedNewsletter) {
         url = `/api/newsletters/${selectedNewsletter._id}`;
+        httpMethod = 'PUT';
 }
 
       if (method === 'POST') {

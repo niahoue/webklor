@@ -1,4 +1,4 @@
-
+const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(helmet);
 app.use(rateLimit);
 app.use(compression);
-app.use(errorHandler);
+
 // Configuration des routes
 app.use('/api', messageRoutes);
 app.use('/api', postRoutes);
@@ -49,8 +49,20 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date()
   });
 });
+ app.use((req, res, next) => {
+      // Si la requête commence par /api, renvoyer une réponse JSON 404
+      if (req.originalUrl.startsWith('/api')) {
+        return res.status(404).json({
+          success: false,
+          message: `Route API non trouvée: ${req.method} ${req.originalUrl}`
+        });
+      }
+      // Pour les autres requêtes (non-API), vous pouvez renvoyer une page HTML 404
+      // ou simplement passer la main au prochain middleware (qui pourrait être votre errorHandler)
+      res.status(404).send('<h1>404 - Page non trouvée</h1><p>La ressource demandée n\'existe pas.</p>');
+    });
 
-
+ app.use(errorHandler);
 // Connexion à MongoDB
 mongoose.connect(config.mongoUri)
   .then(() => {
