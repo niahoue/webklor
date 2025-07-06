@@ -72,7 +72,8 @@ const Login = () => {
           <Row className="justify-content-center align-items-center vh-100">
             <Col md={6} lg={5}>
               <Card className="login-card">
-                <Card.Header className="text-center">                  <div className="logo-container">
+                <Card.Header className="text-center">
+                  <div className="logo-container">
                     <LazyImage 
                       src="/assets/images/logo.png" 
                       alt="Logo WebKlor" 

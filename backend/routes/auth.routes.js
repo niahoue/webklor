@@ -18,10 +18,4 @@ router.post('/auth/reset-password/:token', authController.resetPassword);
 router.get('/auth/me', protect, authController.getMe);
 router.post('/auth/logout', protect, authController.logout);
 
-// Routes d'administration des utilisateurs (protégées et réservées aux admins)
-router.get('/auth/users', protect, authController.restrictTo('admin'), authController.getAllUsers);
-router.get('/auth/users/:id', protect, authController.restrictTo('admin'), authController.getUserById);
-router.put('/auth/users/:id', protect, authController.restrictTo('admin'), authController.updateUser);
-router.delete('/auth/users/:id', protect, authController.restrictTo('admin'), authController.deleteUser);
-
 module.exports = router;

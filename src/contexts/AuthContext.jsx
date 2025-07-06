@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { apiGet, apiPost, apiPut } from '../services/api';
+import { apiGet, apiPost } from '../services/api';
+
 const AuthContext = createContext();
 
 /**
@@ -10,7 +11,8 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('auth_token'));
   const [loading, setLoading] = useState(true);
-    // Charger l'utilisateur depuis le token au démarrage
+
+  // Charger l'utilisateur depuis le token au démarrage
   useEffect(() => {
     const loadUser = async () => {
       if (!token) {
@@ -19,14 +21,13 @@ export const AuthProvider = ({ children }) => {
       }
       
       try {
-        const response = await apiGet('/api/auth/me', {
+        const data = await apiGet('/api/auth/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
         
-        if (response.ok) {
-          const data = await response.json();
+        if (data.success) {
           setCurrentUser(data.data);
         } else {
           // Token invalide ou expiré
@@ -35,6 +36,9 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.error('Erreur lors du chargement de l\'utilisateur:', error);
+        // Token invalide ou expiré
+        localStorage.removeItem('auth_token');
+        setToken(null);
       } finally {
         setLoading(false);
       }
@@ -48,19 +52,15 @@ export const AuthProvider = ({ children }) => {
    * @param {string} email - Email de l'utilisateur
    * @param {string} password - Mot de passe de l'utilisateur
    * @returns {Promise<boolean>} - Succès de la connexion
-   */  const login = async (email, password) => {
+   */
+  const login = async (email, password) => {
     try {
-      const response = await apiPost('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
+      const data = await apiPost('/api/auth/login', {
+        email,
+        password
       });
       
-      const data = await response.json();
-      
-      if (!response.ok) {
+      if (!data.success) {
         throw new Error(data.message || 'Échec de la connexion');
       }
       
@@ -78,11 +78,11 @@ export const AuthProvider = ({ children }) => {
   
   /**
    * Déconnexion de l'utilisateur
-   */  const logout = async () => {
+   */
+  const logout = async () => {
     try {
       if (token) {
-        await apiPost('/api/auth/logout', {
-          method: 'POST',
+        await apiPost('/api/auth/logout', {}, {
           headers: {
             Authorization: `Bearer ${token}`
           }

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const sendEmail = require('../utils/email.service');
+const emailService = require('../utils/email.service');
 
 /**
  * Contrôleur pour la gestion des utilisateurs et de l'authentification
@@ -173,82 +173,85 @@ const authController = {
    * @param {Object} req - Requête Express
    * @param {Object} res - Réponse Express
    */
-  async forgotPassword(req, res) {
-    try {
-      const { email } = req.body;
-      
-      if (!email) {
-        return res.status(400).json({
-          success: false,
-          message: 'Veuillez fournir une adresse email'
-        });
-      }
-      
-      const user = await User.findOne({ email });
-      
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: 'Aucun utilisateur trouvé avec cette adresse email'
-        });
-      }
-      
-      // Générer un token de réinitialisation
-      const resetToken = crypto.randomBytes(32).toString('hex');
-      
-      // Hasher le token et l'enregistrer dans la base de données
-      user.resetPasswordToken = crypto
-        .createHash('sha256')
-        .update(resetToken)
-        .digest('hex');
-      
-      // Définir une expiration de 10 minutes
-      user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
-      
-      await user.save({ validateBeforeSave: false });
-      
-      // Construire l'URL de réinitialisation
-      const resetURL = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
-      
-      // Message email
-      const message = `
-        <h1>Réinitialisation de votre mot de passe</h1>
-        <p>Vous recevez cet email car vous avez demandé la réinitialisation de votre mot de passe.</p>
-        <p>Veuillez cliquer sur le lien ci-dessous pour définir un nouveau mot de passe :</p>
-        <a href="${resetURL}" target="_blank">Réinitialiser mon mot de passe</a>
-        <p>Si vous n'avez pas demandé cette réinitialisation, veuillez ignorer cet email.</p>
-        <p>Cordialement,</p>
-        <p>L'équipe WebKlor</p>
-      `;
-      
-      try {
-        await sendEmail({
-          to: user.email,
-          subject: 'Réinitialisation de votre mot de passe WebKlor',
-          html: message
-        });
-        
-        res.status(200).json({
-          success: true,
-          message: 'Email de réinitialisation envoyé'
-        });
-      } catch (error) {
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpire = undefined;
-        
-        await user.save({ validateBeforeSave: false });
-        
-        throw new Error('Erreur lors de l\'envoi de l\'email. Veuillez réessayer plus tard.');
-      }
-    } catch (error) {
-      console.error('Erreur lors de la demande de réinitialisation:', error);
-      res.status(500).json({
+ async forgotPassword(req, res) {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
         success: false,
-        message: 'Une erreur est survenue lors de la demande de réinitialisation',
-        error: error.message
+        message: 'Veuillez fournir une adresse email'
       });
     }
-  },
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Aucun utilisateur trouvé avec cette adresse email'
+      });
+    }
+
+    // Générer un token de réinitialisation
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    // Hasher le token et l'enregistrer dans la base de données
+    user.resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+
+    // Définir une expiration de 10 minutes
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+
+    await user.save({ validateBeforeSave: false });
+
+    // Construire l'URL de réinitialisation
+    const resetURL = `${req.get('origin')}/reset-password/${resetToken}`;
+    // Message HTML de l'email
+    const htmlMessage = `
+      <h1>Réinitialisation de votre mot de passe</h1>
+      <p>Vous recevez cet email car vous avez demandé la réinitialisation de votre mot de passe.</p>
+      <p>Veuillez cliquer sur le lien ci-dessous pour définir un nouveau mot de passe :</p>
+      <p><a href="${resetURL}" target="_blank" style="color:#007BFF;">Réinitialiser mon mot de passe</a></p>
+      <p>Ce lien est valide pendant 10 minutes.</p>
+      <p>Si vous n'avez pas demandé cette réinitialisation, veuillez ignorer cet email.</p>
+      <p>Cordialement,<br>L'équipe WebKlor</p>
+    `;
+
+    // Envoi de l'email avec retry et gestion d'erreurs
+    await emailService.sendEmailWithRetry(() =>
+      emailService.getTransporter().sendMail({
+        to: user.email,
+        from: process.env.EMAIL_FROM,
+        subject: 'Réinitialisation de votre mot de passe WebKlor',
+        html: htmlMessage
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Email de réinitialisation envoyé'
+    });
+  } catch (error) {
+    console.error('Erreur lors de la demande de réinitialisation:', error);
+
+    // Nettoyer les champs en cas d'échec
+    if (user) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Une erreur est survenue lors de la demande de réinitialisation',
+      error: error.message
+    });
+  }
+},
+
   
   /**
    * Réinitialisation du mot de passe

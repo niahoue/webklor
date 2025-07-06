@@ -32,6 +32,9 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const Login = lazy(() => import('./pages/Login'));
 const ConfirmSubscription = lazy(() => import('./pages/ConfirmSubscription'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
+const  ForgotPassword= lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+  
 
 // Test component
 const TestCard = lazy(() => import('./components/TestCard'));
@@ -97,6 +100,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/confirm-subscription/:token" element={<ConfirmSubscription />} />
                 <Route path="/unsubscribe" element={<Unsubscribe />} />
+                <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                <Route path="/reset-password/:token" element={<ResetPassword/>}/>
               
               {/* Routes protégées d'administration */}
               <Route element={<ProtectedRoute />}>
