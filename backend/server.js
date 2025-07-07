@@ -24,6 +24,7 @@ const testimonialRoutes = require('./routes/testimonial.routes');
 // Initialisation de l'application Express
 const app = express();
 
+app.set('trust proxy', 1);
 // Configuration des middlewares
 app.use(corsStrict);
 app.use(bodyParser.json({ limit: '10mb' }));
