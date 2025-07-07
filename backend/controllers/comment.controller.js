@@ -1,6 +1,6 @@
 const Comment = require('../models/comment.model');
 const Post = require('../models/post.model');
-const sendEmail = require('../utils/email.service');
+const emailService = require('../utils/email.service');
 
 /**
  * Contrôleur pour la gestion des commentaires
@@ -118,22 +118,20 @@ const commentController = {
       
       // Envoyer un email de notification
       try {
-        await sendEmail({
-          to: process.env.EMAIL_TO,
-          subject: 'Nouveau commentaire sur le blog WebKlor',
-          html: `
-            <h1>Nouveau commentaire à modérer</h1>
-            <p><strong>Article:</strong> ${post.title}</p>
-            <p><strong>De:</strong> ${name} (${email})</p>
-            <p><strong>Contenu:</strong></p>
-            <div style="background-color: #f5f5f5; padding: 10px; border-left: 4px solid #0275d8;">
-              ${content}
-            </div>
-            <p><a href="${process.env.FRONTEND_URL}/admin/comments" target="_blank">Modérer ce commentaire</a></p>
-          `
+        // Utiliser la méthode sendNotificationEmail avec les bonnes données
+        await emailService.sendNotificationEmail({
+          fullName: name,
+          email: email,
+          subject: `Nouveau commentaire sur: ${post.title}`,
+          message: content,
+          // Ajouter des informations spécifiques au commentaire
+          phone: null, // Les commentaires n'ont pas de téléphone
+          postTitle: post.title,
+          postSlug: post.slug,
+          isReply: !!parentCommentId
         });
-      } catch (error) {
-        console.error('Erreur lors de l\'envoi de l\'email de notification:', error);
+      } catch (emailError) {
+        console.error('Erreur lors de l\'envoi de l\'email de notification:', emailError);
         // Ne pas renvoyer d'erreur au client si l'email échoue
       }
       
@@ -203,7 +201,8 @@ const commentController = {
    * Supprimer un commentaire (admin)
    * @param {Object} req - Requête Express
    * @param {Object} res - Réponse Express
-   */  async deleteComment(req, res) {
+   */
+  async deleteComment(req, res) {
     try {
       const { commentId } = req.params;
       

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import { apiGet, apiPost, apiPut } from '../services/api';
+import { apiPost } from '../services/api';
+
 /**
  * Composant de formulaire d'abonnement à la newsletter
  */
@@ -25,32 +26,43 @@ const NewsletterSignup = ({ variant = 'default' }) => {
       return;
     }
 
+    // Validation email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('Veuillez fournir une adresse email valide.');
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
 
-      const response = await apiPost('/api/newsletters/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, firstName, lastName }),
-      });
+      // Prepare the data to send
+      const subscriptionData = {
+        email: email.trim(),
+        firstName: firstName.trim() || null,
+        lastName: lastName.trim() || null,
+      };
 
-      const data = await response.json();
+      console.log('Sending subscription data:', subscriptionData); // Debug log
 
-      if (!response.ok) {
+      // Use apiPost correctly - assuming it handles the fetch internally
+      const data = await apiPost('/api/newsletters/subscribe', subscriptionData);
+
+      // If apiPost doesn't return parsed JSON, you might need to handle differently
+      if (data.success) {
+        setMessage(data.message);
+        setShowForm(false);
+        // Réinitialiser le formulaire
+        setEmail('');
+        setFirstName('');
+        setLastName('');
+      } else {
         throw new Error(data.message || 'Une erreur est survenue lors de l\'abonnement.');
       }
-
-      setMessage(data.message);
-      setShowForm(false);
-      // Réinitialiser le formulaire
-      setEmail('');
-      setFirstName('');
-      setLastName('');
     } catch (err) {
-      setError(err.message);
+      console.error('Newsletter subscription error:', err); // Debug log
+      setError(err.message || 'Une erreur est survenue lors de l\'abonnement.');
     } finally {
       setLoading(false);
     }

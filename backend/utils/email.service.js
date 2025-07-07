@@ -45,7 +45,109 @@ const emailService = {
       throw error;
     }
   },
+  /**
+   * Envoi d'un email de notification pour un nouveau commentaire
+   * @param {Object} comment - Données du commentaire
+   * @param {Object} post - Données de l'article
+   * @returns {Promise} - Résultat de l'envoi
+   */
+  async sendCommentNotificationEmail(comment, post) {
+    try {
+      logger.info(`📧 Envoi notification commentaire pour: ${comment.name}`);
+      const transporter = this.getTransporter();
 
+      // Gestion des destinataires multiples
+      const recipients = config.email.to.split(',').map(email => email.trim());
+
+      const mailOptions = {
+        from: config.email.from,
+        to: recipients,
+        subject: `💬 Nouveau commentaire sur "${post.title}" - WebKlor`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd;">
+            <div style="background-color: #007BFF; padding: 20px; text-align: center;">
+              <h1 style="color: white; margin: 0;">💬 Nouveau Commentaire WebKlor</h1>
+            </div>
+            <div style="padding: 20px; background-color: #f9f9f9;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; background-color: #f1f1f1;">📝 Article:</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee;">${post.title}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; background-color: #f1f1f1;">👤 Auteur:</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee;">${comment.name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; background-color: #f1f1f1;">📧 Email:</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:${comment.email}">${comment.email}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; background-color: #f1f1f1;">💬 Type:</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee;">${comment.parentComment ? 'Réponse à un commentaire' : 'Commentaire principal'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; background-color: #f1f1f1;">⏰ Date:</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee;">${new Date().toLocaleString('fr-FR')}</td>
+                </tr>
+              </table>
+              
+              <div style="margin-top: 20px;">
+                <h3 style="color: #333; border-bottom: 2px solid #007BFF; padding-bottom: 10px;">💬 Contenu du commentaire:</h3>
+                <div style="background-color: #fff; padding: 15px; border-left: 4px solid #007BFF; margin: 10px 0; white-space: pre-wrap;">${comment.content}</div>
+              </div>
+
+              <div style="margin-top: 20px; padding: 15px; background-color: #e8f4ff; border-left: 4px solid #007BFF;">
+                <h4 style="margin: 0 0 10px 0; color: #0056b3;">🚀 Actions rapides:</h4>
+                <p style="margin: 5px 0;">
+                  <a href="${process.env.FRONTEND_URL}/admin/comments" 
+                     style="background-color: #007BFF; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; margin-right: 10px;">
+                    ✅ Modérer
+                  </a>
+                  <a href="mailto:${comment.email}?subject=Re: Votre commentaire sur ${encodeURIComponent(post.title)}" 
+                     style="background-color: #28a745; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; margin-right: 10px;">
+                    ↩️ Répondre
+                  </a>
+                  <a href="${process.env.FRONTEND_URL}/blog/${post.slug}" 
+                     style="background-color: #6c757d; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px;">
+                    👁️ Voir l'article
+                  </a>
+                </p>
+              </div>
+            </div>
+            <div style="background-color: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #666;">
+              <p>© ${new Date().getFullYear()} WebKlor - Système automatique de notification</p>
+            </div>
+          </div>
+        `,
+        text: `
+Nouveau commentaire WebKlor
+
+Article: ${post.title}
+Auteur: ${comment.name} <${comment.email}>
+Type: ${comment.parentComment ? 'Réponse à un commentaire' : 'Commentaire principal'}
+Date: ${new Date().toLocaleString('fr-FR')}
+
+Contenu:
+${comment.content}
+
+---
+Actions:
+- Modérer: ${process.env.FRONTEND_URL}/admin/comments
+- Répondre: ${comment.email}
+- Voir l'article: ${process.env.FRONTEND_URL}/blog/${post.slug}
+        `
+      };
+
+      const result = await transporter.sendMail(mailOptions);
+      logger.info('✅ Email de notification commentaire envoyé:', result.messageId);
+      return result;
+    } catch (error) {
+      logger.error('❌ Erreur envoi notification commentaire:', error);
+      throw error;
+    }
+  },
+  
   /**
    * Validation des paramètres email
    */

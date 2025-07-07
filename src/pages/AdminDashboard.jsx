@@ -16,7 +16,8 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState({
     totalPosts: 0,
     totalSubscribers: 0,
-    totalComments: 0
+    totalComments: 0,
+    totalTestimonials: 0 // Nouveau: Nombre total de témoignages
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,10 +30,14 @@ const AdminDashboard = () => {
         const postsData = await apiGet('/api/admin/blog/stats', { headers: getAuthHeader() });
         const subscribersData = await apiGet('/api/newsletters/subscribers/list', { headers: getAuthHeader() });
         const commentsData = await apiGet('/api/admin/blog/comments', { headers: getAuthHeader() });
+        // Nouvel appel API pour les témoignages
+        const testimonialsData = await apiGet('/api/admin/testimonials', { headers: getAuthHeader() });
+
         setStats({
           totalPosts: postsData.data?.totalPosts || 0,
           totalSubscribers: subscribersData.count || 0,
-          totalComments: commentsData.data?.length || 0
+          totalComments: commentsData.data?.length || 0,
+          totalTestimonials: testimonialsData.count || 0 // Utilisation du 'count' de la réponse
         });
       } catch (err) {
         if (err.message && err.message.toLowerCase().includes('401')) {
@@ -84,7 +89,7 @@ const AdminDashboard = () => {
                 </Card.Body>
               </Card>
             </Col>
-            
+
             <Col md={4} className="mb-3">
               <Card className="border-0 shadow-sm h-100 admin-card stat-card">
                 <Card.Body className="d-flex flex-column">
@@ -94,7 +99,8 @@ const AdminDashboard = () => {
                       <i className="bi bi-envelope"></i>
                     </div>
                   </div>
-                  <h2 className="mb-3 stat-value">{loading ? '...' : stats.totalSubscribers}</h2>                  <div className="mt-auto">
+                  <h2 className="mb-3 stat-value">{loading ? '...' : stats.totalSubscribers}</h2>
+                  <div className="mt-auto">
                     <Button
                       variant="success"
                       as={Link}
@@ -116,7 +122,7 @@ const AdminDashboard = () => {
                 </Card.Body>
               </Card>
             </Col>
-            
+
             <Col md={4} className="mb-3">
               <Card className="border-0 shadow-sm h-100 admin-card stat-card">
                 <Card.Body className="d-flex flex-column">
@@ -135,6 +141,31 @@ const AdminDashboard = () => {
                       className="w-100"
                     >
                       Gérer les commentaires
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            {/* Nouvelle carte pour les Témoignages */}
+            <Col md={4} className="mb-3">
+              <Card className="border-0 shadow-sm h-100 admin-card stat-card">
+                <Card.Body className="d-flex flex-column">
+                  <div className="d-flex align-items-center justify-content-between mb-3">
+                    <h5 className="mb-0">Témoignages</h5>
+                    <div className="fs-1 text-info stat-icon">
+                      <i className="bi bi-star"></i> {/* Icône d'étoile pour les témoignages */}
+                    </div>
+                  </div>
+                  <h2 className="mb-3 stat-value">{loading ? '...' : stats.totalTestimonials}</h2>
+                  <div className="mt-auto">
+                    <Button
+                      variant="info"
+                      as={Link}
+                      to="/admin/testimonials"
+                      className="w-100"
+                    >
+                      Gérer les témoignages
                     </Button>
                   </div>
                 </Card.Body>
@@ -166,7 +197,7 @@ const AdminDashboard = () => {
                 </Card.Body>
               </Card>
             </Col>
-            
+
             <Col md={3} className="mb-3">
               <Card className="border-0 shadow-sm h-100 admin-card">
                 <Card.Body>
@@ -187,7 +218,7 @@ const AdminDashboard = () => {
                 </Card.Body>
               </Card>
             </Col>
-            
+
             <Col md={3} className="mb-3">
               <Card className="border-0 shadow-sm h-100 admin-card">
                 <Card.Body>
@@ -208,7 +239,29 @@ const AdminDashboard = () => {
                 </Card.Body>
               </Card>
             </Col>
-            
+
+            {/* Nouvelle carte pour la gestion des Témoignages dans Accès rapide */}
+            <Col md={3} className="mb-3">
+              <Card className="border-0 shadow-sm h-100 admin-card">
+                <Card.Body>
+                  <div className="d-flex flex-column align-items-center text-center">
+                    <div className="fs-1 mb-3 text-info stat-icon">
+                      <i className="bi bi-quote"></i> {/* Icône de citation pour la gestion des témoignages */}
+                    </div>
+                    <h5>Témoignages</h5>
+                    <p className="small text-muted">Gérer les témoignages du site</p>
+                    <Button
+                      variant="outline-info"
+                      onClick={() => navigate('/admin/testimonials')}
+                      className="mt-auto w-100"
+                    >
+                      Gérer
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+
             <Col md={3} className="mb-3">
               <Card className="border-0 shadow-sm h-100 admin-card">
                 <Card.Body>

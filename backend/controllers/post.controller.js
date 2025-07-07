@@ -357,38 +357,61 @@ const postController = {
       });
     }
   },
-
+  // Ajoutez cette fonction à l'objet postController
   /**
-   * Récupération d'un article par son ID (pour l'administration)
+   * Récupération d'un article par son ID pour modification (admin)
    * @param {Object} req - Requête Express
    * @param {Object} res - Réponse Express
    */
-  async getPostById(req, res) {
-    try {
-      const { id } = req.params;
-      
-      const post = await Post.findById(id);
-      
-      if (!post) {
-        return res.status(404).json({
-          success: false,
-          message: 'Article non trouvé'
-        });
-      }
-      
-      res.status(200).json({
-        success: true,
-        data: post
-      });
-    } catch (error) {
-      logger.error('Erreur lors de la récupération de l\'article:', error);
-      res.status(500).json({
+  
+ /**
+ * Récupération d'un article par son ID (pour l'administration)
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
+async getPostById(req, res) {
+  try {
+    const { id } = req.params;
+    
+    // Vérifier si l'ID est valide (format MongoDB ObjectId)
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
         success: false,
-        message: 'Une erreur est survenue lors de la récupération de l\'article',
-        error: error.message
+        message: 'ID d\'article invalide'
       });
     }
-  },
+    
+    const post = await Post.findById(id);
+    
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: 'Article non trouvé'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      data: post
+    });
+  } catch (error) {
+    logger.error('Erreur lors de la récupération de l\'article:', error);
+    
+    // Gérer les erreurs spécifiques de MongoDB
+    if (error.name === 'CastError') {
+      return res.status(400).json({
+        success: false,
+        message: 'ID d\'article invalide'
+      });
+    }
+    
+    res.status(500).json({
+      success: false,
+      message: 'Une erreur est survenue lors de la récupération de l\'article',
+      error: error.message
+    });
+  }
+},
 
   /**
    * Changement du statut d'un article

@@ -34,11 +34,7 @@ const ConfirmSubscription = lazy(() => import('./pages/ConfirmSubscription'));
 const Unsubscribe = lazy(() => import('./pages/Unsubscribe'));
 const  ForgotPassword= lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
-  
 
-// Test component
-const TestCard = lazy(() => import('./components/TestCard'));
-const TestTestimonials = lazy(() => import('./components/TestTestimonials'));
 
 // Pages admin avec lazy loading
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
@@ -48,6 +44,7 @@ const AdminSubscribers = lazy(() => import('./pages/AdminSubscribers'));
 const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminComments = lazy(() => import('./pages/AdminComments'));
 const BlogEditor = lazy(() => import('./components/BlogEditor'));
+const AdminTestimonial = lazy(() => import('./pages/AdminTestimonial'))
 
 import { pageVariants } from './utils/animations';
 
@@ -89,8 +86,6 @@ function App() {
                 <Route path="/services" element={<Services />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/temoignages" element={<Testimonials />} />
-                <Route path="/test-card" element={<TestCard />} />
-                <Route path="/test-testimonials" element={<TestTestimonials />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<Contact />} />
@@ -108,12 +103,14 @@ function App() {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/blog" element={<AdminBlog />} />
                 <Route path="/admin/blog/new" element={<BlogEditor />} />
-                <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
+                <Route path="/admin/blog/posts/:id" element={<BlogEditor />} />
                 <Route path="/admin/newsletter" element={<AdminNewsletter />} />
                 <Route path="/admin/subscribers" element={<AdminSubscribers />} />
                 <Route path="/admin/users" element={<AdminUsers />} />
                 <Route path="/admin/comments" element={<AdminComments />} />
-              </Route>              </Routes>
+                <Route path="/admin/testimonials" element={<AdminTestimonial/>}/>
+              </Route>              
+              </Routes>
             </Suspense>
           </motion.div>
           <ConditionalFooter />

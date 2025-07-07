@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -55,58 +55,80 @@ const BlogEditor = () => {
     'link', 'image'
   ];
   
+  // Fonction pour charger les données de l'article (useCallback pour éviter les re-renders)
+  const fetchPost = useCallback(async () => {
+    if (!id) return;
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      console.log('Tentative de chargement de l\'article avec ID:', id);
+      
+      const response = await apiGet(`/api/admin/blog/posts/${id}`, { 
+        headers: getAuthHeader() 
+      });
+      
+      console.log('Réponse API:', response);
+      
+      if (!response.success) {
+        throw new Error(response.message || 'Erreur lors du chargement de l\'article');
+      }
+      
+      const post = response.data;
+      
+      setFormData({
+        title: post.title || '',
+        excerpt: post.excerpt || '',
+        content: post.content || '',
+        category: post.category || 'Développement Web',
+        tags: Array.isArray(post.tags) ? post.tags.join(', ') : '',
+        author: post.author || 'Équipe WebKlor',
+        featuredImage: post.featuredImage || '',
+        status: post.status || 'brouillon',
+        readTime: post.readTime || 5
+      });
+      
+      setPreviewImage(post.featuredImage || '');
+      
+    } catch (error) {
+      console.error('Erreur lors du chargement de l\'article:', error);
+      
+      if (error.message && error.message.toLowerCase().includes('401')) {
+        setError('Session expirée. Redirection vers la page de connexion...');
+        setTimeout(() => navigate('/login'), 2000);
+      } else if (error.message && error.message.toLowerCase().includes('404')) {
+        setError('Article non trouvé.');
+      } else {
+        setError('Impossible de charger l\'article. ' + (error.message || 'Erreur inconnue'));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [id, getAuthHeader, navigate]);
+  
   // Charger les données de l'article si en mode édition
   useEffect(() => {
     if (!isNewPost) {
       fetchPost();
     }
-  }, [id]);
-    const fetchPost = async () => {
-    setLoading(true);
-    try {
-      const data = await apiGet(`/api/admin/blog/posts/${id}`, { headers: getAuthHeader() });
-      const post = data.data;
-      
-      setFormData({
-        title: post.title,
-        excerpt: post.excerpt,
-        content: post.content,
-        category: post.category,
-        tags: post.tags.join(', '),
-        author: post.author,
-        featuredImage: post.featuredImage,
-        status: post.status,
-        readTime: post.readTime
-      });
-      
-      setPreviewImage(post.featuredImage);
-      
-    } catch (error) {
-      if (error.message && error.message.toLowerCase().includes('401')) {
-        navigate('/login');
-      } else {
-        setError('Impossible de charger l\'article. ' + error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [isNewPost, fetchPost]);
   
   // Gérer les changements dans le formulaire
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
-    });
+    }));
   };
   
   // Gérer les changements dans l'éditeur de texte
   const handleContentChange = (content) => {
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       content
-    });
+    }));
   };
   
   // Gérer le changement d'image
@@ -116,10 +138,10 @@ const BlogEditor = () => {
       const reader = new FileReader();
       reader.onload = () => {
         setPreviewImage(reader.result);
-        setFormData({
-          ...formData,
+        setFormData(prev => ({
+          ...prev,
           featuredImage: reader.result
-        });
+        }));
       };
       reader.readAsDataURL(file);
     }
@@ -151,17 +173,23 @@ const BlogEditor = () => {
         ...formData,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
       };
-        // Déterminer l'URL et la méthode
+      
+      console.log('Données à envoyer:', postData);
+      
+      // Déterminer l'URL et la méthode
       const url = isNewPost 
         ? `/api/admin/blog/posts` 
         : `/api/admin/blog/posts/${id}`;
         
       // Envoyer la requête
+      let response;
       if (isNewPost) {
-        await apiPost(url, postData, { headers: getAuthHeader() });
+        response = await apiPost(url, postData, { headers: getAuthHeader() });
       } else {
-        await apiPut(url, postData, { headers: getAuthHeader() });
+        response = await apiPut(url, postData, { headers: getAuthHeader() });
       }
+      
+      console.log('Réponse sauvegarde:', response);
       
       setSuccess(`Article ${isNewPost ? 'créé' : 'mis à jour'} avec succès !`);
       
@@ -171,10 +199,13 @@ const BlogEditor = () => {
       }, 2000);
       
     } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
+      
       if (error.message && error.message.toLowerCase().includes('401')) {
-        navigate('/login');
+        setError('Session expirée. Redirection vers la page de connexion...');
+        setTimeout(() => navigate('/login'), 2000);
       } else {
-        setError('Erreur lors de l\'enregistrement : ' + error.message);
+        setError('Erreur lors de l\'enregistrement : ' + (error.message || 'Erreur inconnue'));
       }
     } finally {
       setLoading(false);
@@ -191,6 +222,26 @@ const BlogEditor = () => {
     'Astuces',
     'Actualités'
   ];
+  
+  // Afficher un indicateur de chargement pendant la récupération des données
+  if (loading && !isNewPost && !formData.title) {
+    return (
+      <Container className="py-5">
+        <Row className="justify-content-center">
+          <Col lg={10}>
+            <Card className="shadow-sm border-0">
+              <Card.Body className="text-center py-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Chargement...</span>
+                </div>
+                <p className="mt-3 text-muted">Chargement de l'article...</p>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
   
   return (
     <Container className="py-5">
@@ -258,7 +309,8 @@ const BlogEditor = () => {
                   <Col md={4}>
                     {/* Image à la une */}
                     <Form.Group className="mb-3">
-                      <Form.Label>Image à la une</Form.Label>                      <div className="mb-2">
+                      <Form.Label>Image à la une</Form.Label>
+                      <div className="mb-2">
                         {previewImage ? (
                           <LazyImage
                             src={previewImage}

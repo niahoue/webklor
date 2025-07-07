@@ -246,7 +246,8 @@ const BlogPost = () => {
                 <h3 className="mb-4">Articles liés</h3>
                 <Row>
                   {relatedPosts.map((relatedPost) => (
-                    <Col md={4} key={relatedPost._id} className="mb-4">                      <Card className="h-100 border-0 shadow-sm">
+                    <Col md={4} key={relatedPost._id} className="mb-4">
+                    <Card className="h-100 border-0 shadow-sm">
                         <div style={{ height: '160px', overflow: 'hidden' }}>
                           <LazyImage 
                             src={relatedPost.featuredImage} 

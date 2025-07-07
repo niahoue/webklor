@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, Button, Spinner, Alert } from 'react-bootstrap';
 import CommentForm from './CommentForm';
 import { apiGet, apiPost, apiPut } from '../services/api';
+
 /**
  * Composant affichant un commentaire individuel avec ses réponses
  * @param {Object} props - Propriétés du composant
@@ -84,16 +85,18 @@ const Comments = ({ postId }) => {
     try {
       const response = await apiGet(`/api/blog/posts/${postId}/comments`);
       
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Erreur lors du chargement des commentaires');
+      // Vérifiez si la requête a réussi en utilisant la propriété 'success' de la réponse
+      if (!response.success) { // Anciennement !response.ok
+        // Accédez directement à response.message pour l'erreur
+        throw new Error(response.message || 'Erreur lors du chargement des commentaires');
       }
       
-      const data = await response.json();
-      setComments(data.data);
+      // La propriété 'data' contient les commentaires
+      setComments(response.data); // Anciennement const data = await response.json(); setComments(data.data);
     } catch (err) {
       console.error('Erreur lors du chargement des commentaires:', err);
-      setError('Impossible de charger les commentaires. Veuillez réessayer plus tard.');
+      // Assurez-vous d'accéder correctement au message de l'erreur
+      setError(err.message || 'Impossible de charger les commentaires. Veuillez réessayer plus tard.');
     } finally {
       setLoading(false);
     }

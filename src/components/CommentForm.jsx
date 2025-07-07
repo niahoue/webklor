@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
-import { apiGet, apiPost, apiPut } from '../services/api';
+import { apiPost } from '../services/api';
+
 /**
  * Formulaire pour ajouter un commentaire
  * @param {Object} props - Propriétés du composant 
@@ -33,22 +34,26 @@ const CommentForm = ({ postId, parentCommentId = null, onCommentSubmitted }) => 
     setIsSubmitting(true);
     setError(null);
     setSuccess(false);
-      try {
-      const response = await apiPost(`/api/blog/posts/${postId}/comments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...formData,
-          parentCommentId: parentCommentId
-        })
-      });
+    
+    try {
+      // Préparer les données à envoyer
+      const commentData = {
+        name: formData.name,
+        email: formData.email,
+        content: formData.content
+      };
       
-      const data = await response.json();
+      // Ajouter parentCommentId seulement s'il existe
+      if (parentCommentId) {
+        commentData.parentCommentId = parentCommentId;
+      }
       
-      if (!response.ok) {
-        throw new Error(data.message || 'Une erreur est survenue lors de l\'envoi du commentaire');
+      // Utiliser apiPost correctement (sans les options fetch)
+      const response = await apiPost(`/api/blog/posts/${postId}/comments`, commentData);
+      
+      // Vérifier si la réponse contient une erreur
+      if (!response.success) {
+        throw new Error(response.message || 'Une erreur est survenue lors de l\'envoi du commentaire');
       }
       
       // Réinitialiser le formulaire en cas de succès
@@ -64,8 +69,15 @@ const CommentForm = ({ postId, parentCommentId = null, onCommentSubmitted }) => 
       if (onCommentSubmitted) {
         onCommentSubmitted();
       }
+      
+      // Masquer le message de succès après 5 secondes
+      setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
+      
     } catch (err) {
-      setError(err.message);
+      console.error('Erreur lors de l\'envoi du commentaire:', err);
+      setError(err.message || 'Une erreur est survenue lors de l\'envoi du commentaire');
     } finally {
       setIsSubmitting(false);
     }

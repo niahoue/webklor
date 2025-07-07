@@ -133,10 +133,12 @@ const AdminBlog = () => {
       <SEO {...seoData} />
       
       <section className="py-5 bg-light">
-        <Container>          <Row className="align-items-center mb-3">
+        <Container>
+          <Row className="align-items-center mb-3">
             <Col>
               <h1 className="mb-0">Administration du Blog</h1>
-            </Col>            <Col xs="auto">
+            </Col>
+            <Col xs="auto">
               <Button 
                 variant="outline-secondary" 
                 onClick={() => navigate('/admin')}
@@ -299,7 +301,8 @@ const AdminBlog = () => {
                       <tbody>
                         {posts.map((post) => (
                           <tr key={post._id}>
-                            <td>                              <div className="d-flex align-items-center">
+                            <td>                              
+                            <div className="d-flex align-items-center">
                                 {post.featuredImage && (
                                   <LazyImage 
                                     src={post.featuredImage}
@@ -335,7 +338,7 @@ const AdminBlog = () => {
                                 <Button 
                                   variant="outline-primary" 
                                   size="sm"
-                                  onClick={() => navigate(`/admin/blog/edit/${post._id}`)}
+                                  onClick={() => navigate(`/admin/blog/posts/${post._id}`)}
                                 >
                                   <i className="bi bi-pencil"></i>
                                 </Button>
